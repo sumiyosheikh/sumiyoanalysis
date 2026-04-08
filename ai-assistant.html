@@ -292,7 +292,7 @@
       <div class="chat-dot"></div>
       <div class="chat-dot"></div>
       <div class="chat-dot"></div>
-      <div class="chat-header-text">Supply Chain AI — Powered by Groq</div>
+      <div class="chat-header-text">Supply Chain AI — POWERED BY OPENROUTER</div>
     </div>
     <div class="chat-messages" id="messages">
       <div class="msg msg-ai">Hello! I'm your supply chain analyst. I can see the current inventory data above. Ask me anything — which products need reordering, demand forecasts, risk analysis, or recommendations.</div>
@@ -310,7 +310,7 @@
 </footer>
 
 <script>
-  const GROQ_API_KEY ="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";
+  const OPENROUTER_API_KEY = "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";
 
   const inventoryData = `
 Product | Stock Level | Reorder Point | Monthly Demand | Lead Time (days) | Status
@@ -339,7 +339,7 @@ Widget E | 75 | 60 | 90 | 10 | Watch
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`
+          'Authorization': `Bearer ${OPENROUTER_API_KEY}`
         },
         body: JSON.stringify({
           model: 'llama3-70b-8192',
