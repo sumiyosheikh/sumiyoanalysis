@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sumiyo Analysis</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, serif; background: #fff; }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 52px;
+      background: #B5A090;
+    }
+    .nav-logo {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: #F5EFE6;
+      text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 12px;
+      color: #F5EFE6;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .hero {
+      position: relative;
+      height: 520px;
+      background: #A89080;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #8B7355 0%, #A89080 40%, #C4A882 100%);
+    }
+    .hero-arch {
+      position: absolute;
+      right: 10%;
+      top: 0;
+      width: 180px;
+      height: 360px;
+      border-radius: 90px 90px 0 0;
+      background: rgba(180,155,130,0.2);
+    }
+    .hero-arch2 {
+      position: absolute;
+      right: 16%;
+      top: 0;
+      width: 120px;
+      height: 280px;
+      border-radius: 60px 60px 0 0;
+      background: rgba(160,135,110,0.15);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: 68px;
+      color: #F5EFE6;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: 11px;
+      color: rgba(245,239,230,0.75);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+    }
+
+    .projects {
+      background: #FFFFFF;
+      padding: 64px 52px;
+    }
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+    .projects-title {
+      font-size: 36px;
+      color: #2C2420;
+      font-weight: 400;
+    }
+    .arrows { display: flex; gap: 20px; }
+    .arrow {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #9E8E80;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .arrow:hover { color: #2C2420; }
+
+    .cards {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 8px;
+    }
+    .cards::-webkit-scrollbar { display: none; }
+
+    .card {
+      min-width: 300px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .card-img {
+      height: 220px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-tag {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: rgba(245,239,230,0.9);
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      background: rgba(0,0,0,0.2);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+    .c1 { background: #C4B5A0; }
+    .c2 { background: #A0B0B8; }
+    .c3 { background: #A8B898; }
+    .card-name {
+      font-size: 16px;
+      color: #2C2420;
+      margin-bottom: 6px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: #9E8E80;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 28px 52px;
+      border-top: 0.5px solid #E8E0D8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-size: 12px;
+      color: #9E8E80;
+      font-family: Arial, sans-serif;
+    }
+    footer a { color: #9E8E80; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">Sumiyo Analysis</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-arch"></div>
+    <div class="hero-arch2"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Sumiyo Analysis</h1>
+      <p class="hero-sub">Data &nbsp;·&nbsp; Analytics &nbsp;·&nbsp; Strategy</p>
+    </div>
+  </section>
+
+  <section class="projects">
+    <div class="projects-header">
+      <h2 class="projects-title">Selected Projects</h2>
+      <div class="arrows">
+        <button class="arrow" onclick="scroll(-1)">&#8592;</button>
+        <button class="arrow" onclick="scroll(1)">&#8594;</button>
+      </div>
+    </div>
+    <div class="cards" id="cards">
+      <div class="card">
+        <div class="card-img c1">
+          <span class="card-tag">Python · AI</span>
+        </div>
+        <div class="card-name">AI Supply Chain Assistant</div>
+        <div class="card-desc">AI-powered chat for inventory analysis and reorder recommendations</div>
+      </div>
+      <div class="card">
+        <div class="card-img c2">
+          <span class="card-tag">Power BI · Excel</span>
+        </div>
+        <div class="card-name">Supplier Risk Tracker</div>
+        <div class="card-desc">Real-time supplier scoring with risk flags and performance trends</div>
+      </div>
+      <div class="card">
+        <div class="card-img c3">
+          <span class="card-tag">Python · AI</span>
+        </div>
+        <div class="card-name">Live Briefing Tool</div>
+        <div class="card-desc">Auto-generating weekly supply chain intelligence reports</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>sumiyosheikh@gmail.com</p>
+    <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
+  </footer>
+
+  <script>
+    const c = document.getElementById('cards');
+    function scroll(dir) { c.scrollBy({ left: dir * 320, behavior: 'smooth' }); }
+  </script>
+
+</body>
+</html>
