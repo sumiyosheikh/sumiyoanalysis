@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Supply Chain Assistant — Sumiyo Analysis</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, serif; background: #F8F4EE; color: #2C2420; }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 52px;
+      background: #B5A090;
+    }
+    .nav-logo {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: #F5EFE6;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 12px;
+      color: #F5EFE6;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .hero {
+      background: #B5A090;
+      padding: 48px 52px;
+      border-bottom: 0.5px solid #A09080;
+    }
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: rgba(245,239,230,0.7);
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: 42px;
+      color: #F5EFE6;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: rgba(245,239,230,0.75);
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.06em;
+    }
+
+    .main { max-width: 1100px; margin: 0 auto; padding: 52px; }
+
+    .section-title {
+      font-size: 24px;
+      color: #2C2420;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 52px;
+      font-family: Arial, sans-serif;
+    }
+    th {
+      background: #B5A090;
+      color: #F5EFE6;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 0.5px solid #E8E0D8;
+      font-size: 13px;
+      color: #3D3530;
+    }
+    tr:hover td { background: #F5F0E8; }
+    .risk-high { color: #C0392B; font-weight: 500; }
+    .risk-low { color: #27AE60; font-weight: 500; }
+    .risk-medium { color: #E67E22; font-weight: 500; }
+
+    .chat-section {
+      background: #FFFFFF;
+      border-radius: 8px;
+      border: 0.5px solid #E8E0D8;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: #B5A090;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #F5EFE6;
+      opacity: 0.7;
+    }
+    .chat-header-text {
+      font-size: 13px;
+      color: #F5EFE6;
+      letter-spacing: 0.08em;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+    }
+    .chat-messages {
+      height: 340px;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .msg {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.7;
+      font-family: Arial, sans-serif;
+    }
+    .msg-ai {
+      background: #F5F0E8;
+      color: #3D3530;
+      align-self: flex-start;
+      border: 0.5px solid #E8E0D8;
+    }
+    .msg-user {
+      background: #B5A090;
+      color: #F5EFE6;
+      align-self: flex-end;
+    }
+    .chat-input-area {
+      display: flex;
+      border-top: 0.5px solid #E8E0D8;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 16px 20px;
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+      color: #3D3530;
+      background: #FFFFFF;
+    }
+    .chat-input::placeholder { color: #C4B8A8; }
+    .chat-send {
+      padding: 16px 28px;
+      background: #B5A090;
+      color: #F5EFE6;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      transition: background 0.2s;
+    }
+    .chat-send:hover { background: #A09080; }
+    .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 32px;
+      font-size: 12px;
+      color: #9E8E80;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #2C2420; }
+
+    footer {
+      padding: 28px 52px;
+      border-top: 0.5px solid #E8E0D8;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 52px;
+    }
+    footer p {
+      font-size: 12px;
+      color: #9E8E80;
+      font-family: Arial, sans-serif;
+    }
+    footer a { color: #9E8E80; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Sumiyo Analysis</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Project 01 — AI Tools</div>
+  <div class="hero-title">AI Supply Chain Assistant</div>
+  <div class="hero-sub">Ask questions about inventory data · Get real-time AI recommendations</div>
+</div>
+
+<div class="main">
+  <a href="index.html" class="back-link">← Back to projects</a>
+
+  <div class="section-title">Current Inventory</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Stock Level</th>
+        <th>Reorder Point</th>
+        <th>Monthly Demand</th>
+        <th>Lead Time (days)</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Widget A</td>
+        <td>150</td>
+        <td>100</td>
+        <td>120</td>
+        <td>7</td>
+        <td class="risk-low">Healthy</td>
+      </tr>
+      <tr>
+        <td>Widget B</td>
+        <td>20</td>
+        <td>50</td>
+        <td>80</td>
+        <td>14</td>
+        <td class="risk-high">Critical</td>
+      </tr>
+      <tr>
+        <td>Widget C</td>
+        <td>500</td>
+        <td>200</td>
+        <td>150</td>
+        <td>5</td>
+        <td class="risk-low">Healthy</td>
+      </tr>
+      <tr>
+        <td>Widget D</td>
+        <td>8</td>
+        <td>30</td>
+        <td>25</td>
+        <td>21</td>
+        <td class="risk-high">Critical</td>
+      </tr>
+      <tr>
+        <td>Widget E</td>
+        <td>75</td>
+        <td>60</td>
+        <td>90</td>
+        <td>10</td>
+        <td class="risk-medium">Watch</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Ask the AI</div>
+  <div class="chat-section">
+    <div class="chat-header">
+      <div class="chat-dot"></div>
+      <div class="chat-dot"></div>
+      <div class="chat-dot"></div>
+      <div class="chat-header-text">Supply Chain AI — Powered by Groq</div>
+    </div>
+    <div class="chat-messages" id="messages">
+      <div class="msg msg-ai">Hello! I'm your supply chain analyst. I can see the current inventory data above. Ask me anything — which products need reordering, demand forecasts, risk analysis, or recommendations.</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="userInput" placeholder="e.g. Which products are at risk of stocking out?" />
+      <button class="chat-send" id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>sumiyosheikh@gmail.com</p>
+  <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
+</footer>
+
+<script>
+  const GROQ_API_KEY = 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;
+
+  const inventoryData = `
+Product | Stock Level | Reorder Point | Monthly Demand | Lead Time (days) | Status
+Widget A | 150 | 100 | 120 | 7 | Healthy
+Widget B | 20 | 50 | 80 | 14 | Critical
+Widget C | 500 | 200 | 150 | 5 | Healthy
+Widget D | 8 | 30 | 25 | 21 | Critical
+Widget E | 75 | 60 | 90 | 10 | Watch
+  `;
+
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const messages = document.getElementById('messages');
+    const sendBtn = document.getElementById('sendBtn');
+    const question = input.value.trim();
+    if (!question) return;
+
+    messages.innerHTML += `<div class="msg msg-user">${question}</div>`;
+    input.value = '';
+    sendBtn.disabled = true;
+    sendBtn.textContent = '...';
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'llama3-70b-8192',
+          messages: [
+            {
+              role: 'system',
+              content: `You are a supply chain analyst assistant. Here is the current inventory data:\n${inventoryData}\nBe specific, use the data, and give actionable recommendations. Keep responses concise and clear.`
+            },
+            { role: 'user', content: question }
+          ]
+        })
+      });
+
+      const data = await response.json();
+      const answer = data.choices[0].message.content;
+      messages.innerHTML += `<div class="msg msg-ai">${answer}</div>`;
+    } catch (err) {
+      messages.innerHTML += `<div class="msg msg-ai">Sorry, something went wrong. Please try again.</div>`;
+    }
+
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Send';
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  document.getElementById('userInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>
