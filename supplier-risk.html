@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplier Risk Tracker — Sumiyo Analysis</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, serif; background: #F8F4EE; color: #2C2420; }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 52px; background: #B5A090; }
+    .nav-logo { font-size: 13px; letter-spacing: 0.2em; color: #F5EFE6; text-transform: uppercase; text-decoration: none; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a { font-size: 12px; color: #F5EFE6; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; font-family: Arial, sans-serif; opacity: 0.85; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; }
+    .hero { background: #B5A090; padding: 48px 52px; border-bottom: 0.5px solid #A09080; }
+    .hero-label { font-size: 11px; letter-spacing: 0.25em; color: rgba(245,239,230,0.7); text-transform: uppercase; font-family: Arial, sans-serif; margin-bottom: 12px; }
+    .hero-title { font-size: 42px; color: #F5EFE6; font-weight: 400; margin-bottom: 10px; }
+    .hero-sub { font-size: 13px; color: rgba(245,239,230,0.75); font-family: Arial, sans-serif; letter-spacing: 0.06em; }
+    .main { max-width: 1100px; margin: 0 auto; padding: 52px; }
+    .section-title { font-size: 24px; color: #2C2420; font-weight: 400; margin-bottom: 24px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 52px; }
+    .stat-card { background: #fff; border: 0.5px solid #E8E0D8; border-radius: 8px; padding: 24px; text-align: center; }
+    .stat-number { font-size: 36px; font-weight: 400; margin-bottom: 6px; }
+    .stat-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; font-family: Arial, sans-serif; color: #9E8E80; }
+    .stat-red { color: #C0392B; }
+    .stat-orange { color: #E67E22; }
+    .stat-green { color: #27AE60; }
+    .stat-brown { color: #B5A090; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 52px; font-family: Arial, sans-serif; }
+    th { background: #B5A090; color: #F5EFE6; padding: 12px 16px; text-align: left; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400; }
+    td { padding: 12px 16px; border-bottom: 0.5px solid #E8E0D8; font-size: 13px; color: #3D3530; }
+    tr:hover td { background: #F5F0E8; }
+    .risk-high { color: #C0392B; font-weight: 500; }
+    .risk-low { color: #27AE60; font-weight: 500; }
+    .risk-medium { color: #E67E22; font-weight: 500; }
+    .score-bar { background: #F0EBE5; border-radius: 4px; height: 8px; width: 100px; display: inline-block; vertical-align: middle; margin-right: 8px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 4px; }
+    .recommendations { background: #fff; border: 0.5px solid #E8E0D8; border-radius: 8px; padding: 32px; margin-bottom: 52px; }
+    .rec-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 0.5px solid #F0EBE5; align-items: flex-start; }
+    .rec-item:last-child { border-bottom: none; }
+    .rec-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .rec-red { background: #FDECEA; color: #C0392B; }
+    .rec-orange { background: #FEF3E7; color: #E67E22; }
+    .rec-green { background: #EAFAF1; color: #27AE60; }
+    .rec-title { font-size: 14px; color: #2C2420; margin-bottom: 4px; font-family: Arial, sans-serif; font-weight: 500; }
+    .rec-desc { font-size: 12px; color: #9E8E80; font-family: Arial, sans-serif; line-height: 1.6; }
+    .back-link { display: inline-block; margin-bottom: 32px; font-size: 12px; color: #9E8E80; text-decoration: none; letter-spacing: 0.08em; font-family: Arial, sans-serif; text-transform: uppercase; transition: color 0.2s; }
+    .back-link:hover { color: #2C2420; }
+    footer { padding: 28px 52px; border-top: 0.5px solid #E8E0D8; display: flex; justify-content: space-between; margin-top: 52px; }
+    footer p { font-size: 12px; color: #9E8E80; font-family: Arial, sans-serif; }
+    footer a { color: #9E8E80; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Sumiyo Analysis</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html">Projects</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Project 02 — Risk Management</div>
+  <div class="hero-title">Supplier Risk Tracker</div>
+  <div class="hero-sub">Real-time supplier scoring · Risk flags · Performance trends</div>
+</div>
+
+<div class="main">
+  <a href="index.html" class="back-link">← Back to projects</a>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number stat-brown">12</div>
+      <div class="stat-label">Total Suppliers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number stat-red">3</div>
+      <div class="stat-label">High Risk</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number stat-orange">4</div>
+      <div class="stat-label">Medium Risk</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number stat-green">5</div>
+      <div class="stat-label">Low Risk</div>
+    </div>
+  </div>
+
+  <div class="section-title">Supplier Scoreboard</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Supplier</th>
+        <th>Category</th>
+        <th>On-Time Delivery</th>
+        <th>Quality Score</th>
+        <th>Lead Time (days)</th>
+        <th>Risk Score</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Apex Manufacturing</td>
+        <td>Electronics</td>
+        <td>94%</td>
+        <td>92/100</td>
+        <td>7</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:88%;background:#27AE60"></span></span>88</td>
+        <td class="risk-low">Low Risk</td>
+      </tr>
+      <tr>
+        <td>Delta Supplies</td>
+        <td>Raw Materials</td>
+        <td>71%</td>
+        <td>68/100</td>
+        <td>21</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:42%;background:#C0392B"></span></span>42</td>
+        <td class="risk-high">High Risk</td>
+      </tr>
+      <tr>
+        <td>Global Parts Co</td>
+        <td>Components</td>
+        <td>88%</td>
+        <td>85/100</td>
+        <td>10</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:76%;background:#27AE60"></span></span>76</td>
+        <td class="risk-low">Low Risk</td>
+      </tr>
+      <tr>
+        <td>Metro Logistics</td>
+        <td>Packaging</td>
+        <td>79%</td>
+        <td>74/100</td>
+        <td>14</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:61%;background:#E67E22"></span></span>61</td>
+        <td class="risk-medium">Medium Risk</td>
+      </tr>
+      <tr>
+        <td>Pacific Exports</td>
+        <td>Electronics</td>
+        <td>65%</td>
+        <td>59/100</td>
+        <td>28</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:35%;background:#C0392B"></span></span>35</td>
+        <td class="risk-high">High Risk</td>
+      </tr>
+      <tr>
+        <td>Summit Industrial</td>
+        <td>Raw Materials</td>
+        <td>91%</td>
+        <td>89/100</td>
+        <td>8</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:83%;background:#27AE60"></span></span>83</td>
+        <td class="risk-low">Low Risk</td>
+      </tr>
+      <tr>
+        <td>TechSource Ltd</td>
+        <td>Components</td>
+        <td>76%</td>
+        <td>71/100</td>
+        <td>18</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:58%;background:#E67E22"></span></span>58</td>
+        <td class="risk-medium">Medium Risk</td>
+      </tr>
+      <tr>
+        <td>United Freight</td>
+        <td>Logistics</td>
+        <td>63%</td>
+        <td>61/100</td>
+        <td>25</td>
+        <td><span class="score-bar"><span class="score-fill" style="width:38%;background:#C0392B"></span></span>38</td>
+        <td class="risk-high">High Risk</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Recommendations</div>
+  <div class="recommendations">
+    <div class="rec-item">
+      <div class="rec-icon rec-red">!</div>
+      <div>
+        <div class="rec-title">Immediate Action — Delta Supplies & Pacific Exports</div>
+        <div class="rec-desc">Both suppliers are below 45 risk score with on-time delivery under 72%. Begin sourcing alternative suppliers immediately. Consider dual sourcing for critical components to reduce dependency.</div>
+      </div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-icon rec-red">!</div>
+      <div>
+        <div class="rec-title">Critical Review — United Freight</div>
+        <div class="rec-desc">Logistics partner performing at 63% on-time delivery. Delays here impact ALL suppliers. Schedule performance review meeting and establish SLA penalties for missed targets.</div>
+      </div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-icon rec-orange">~</div>
+      <div>
+        <div class="rec-title">Monitor Closely — Metro Logistics & TechSource Ltd</div>
+        <div class="rec-desc">Medium risk suppliers showing declining trends. Increase check-in frequency to monthly reviews. Request improvement plans with measurable targets over next 90 days.</div>
+      </div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-icon rec-green">✓</div>
+      <div>
+        <div class="rec-title">Strengthen Relationships — Apex, Global Parts, Summit Industrial</div>
+        <div class="rec-desc">Top performing suppliers delivering consistently above 88% on-time. Consider preferred supplier agreements, volume commitments, or early payment terms to lock in reliability.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>sumiyosheikh@gmail.com</p>
+  <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
+</footer>
+
+</body>
+</html>
