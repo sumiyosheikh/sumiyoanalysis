@@ -1,2 +1,2 @@
 # sumiyoanalysis
-Supply Chain AI Portfolio Website
+Supply Chain Portfolio Website
