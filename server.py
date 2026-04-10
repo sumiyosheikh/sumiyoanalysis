@@ -14,7 +14,7 @@ def chat():
     question = data.get("question")
     inventory = data.get("inventory", "")
 
-    response = requests.post(
+    groq_response = requests.post(
         "https://api.groq.com/openai/v1/chat/completions",
         headers={
             "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -31,9 +31,14 @@ def chat():
         }
     )
 
-    result = response.json()
-    answer = result["choices"][0]["message"]["content"]
-    return jsonify({"answer": answer})
+    result = groq_response.json()
+
+    if "choices" in result:
+        answer = result["choices"][0]["message"]["content"]
+        return jsonify({"answer": answer})
+    else:
+        error_msg = result.get("error", {}).get("message", "Unknown error from Groq")
+        return jsonify({"answer": f"AI Error: {error_msg}"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
