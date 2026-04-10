@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -14,31 +14,26 @@ def chat():
     question = data.get("question")
     inventory = data.get("inventory", "")
 
-    groq_response = requests.post(
-        "https://api.groq.com/openai/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json"
-        },
+    response = requests.post(
+        f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}",
+        headers={"Content-Type": "application/json"},
         json={
-            "model": "llama3-70b-8192",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": f"You are a supply chain analyst assistant. Here is the current inventory data:\n{inventory}\n\nAnswer this question: {question}\n\nBe specific, use the data, and give actionable recommendations. Keep it concise."
-                }
-            ]
+            "contents": [{
+                "parts": [{
+                    "text": f"You are a supply chain analyst assistant. Here is the current inventory data:\n{inventory}\n\nAnswer this question: {question}\n\nBe specific, use the data, and give actionable recommendations. Keep it concise."
+                }]
+            }]
         }
     )
 
-    result = groq_response.json()
+    result = response.json()
 
-    if "choices" in result:
-        answer = result["choices"][0]["message"]["content"]
+    if "candidates" in result:
+        answer = result["candidates"][0]["content"]["parts"][0]["text"]
         return jsonify({"answer": answer})
     else:
-        error_msg = result.get("error", {}).get("message", "Unknown error from Groq")
-        return jsonify({"answer": f"AI Error: {error_msg}"})
+        error_msg = str(result)
+        return jsonify({"answer": f"Error: {error_msg}"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
