@@ -184,6 +184,7 @@
       transition: transform 0.3s;
     }
     .card:hover { transform: translateY(-6px); }
+
     .card-img {
       height: 240px;
       border-radius: 4px;
@@ -197,6 +198,7 @@
     .c1 { background: #C8B49A; }
     .c2 { background: #9AAAB8; }
     .c3 { background: #A8B89A; }
+
     .card-tag {
       font-size: 10px;
       letter-spacing: 0.12em;
@@ -206,7 +208,31 @@
       background: rgba(44,36,32,0.25);
       padding: 5px 12px;
       border-radius: 2px;
+      position: relative;
+      z-index: 2;
     }
+
+    .card-hover {
+      position: absolute;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      background: rgba(44,36,32,0.88);
+      padding: 20px;
+      transition: 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card-hover p {
+      font-size: 12px;
+      color: #F5EFE6;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+    }
+    .card-img:hover .card-hover { bottom: 0; }
+
     .card-name {
       font-size: 18px;
       color: #2C2420;
@@ -221,21 +247,17 @@
       line-height: 1.7;
     }
 
-    .about {
-      background: #F8F4EE;
-      padding: 72px 60px;
+    footer {
+      padding: 28px 60px;
+      border-top: 0.5px solid #E0D8CE;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 0.5px solid #E0D8CE;
+      background: #F8F4EE;
     }
-    .about-text {
-      max-width: 560px;
-      font-size: 15px;
-      color: #6A5848;
-      line-height: 1.9;
-      font-family: Arial, sans-serif;
-    }
+    footer p { font-size: 11px; color: #B5A090; font-family: Arial, sans-serif; letter-spacing: 0.08em; }
+    footer a { color: #B5A090; text-decoration: none; }
+    footer a:hover { color: #2C2420; }
     .contact-btn {
       padding: 14px 32px;
       border: 0.5px solid #2C2420;
@@ -248,52 +270,71 @@
       text-transform: uppercase;
       transition: all 0.2s;
       border-radius: 2px;
-      white-space: nowrap;
     }
     .contact-btn:hover { background: #2C2420; color: #F8F4EE; }
-
-    footer {
-      padding: 28px 60px;
-      border-top: 0.5px solid #E0D8CE;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #F8F4EE;
-    }
-    footer p {
-      font-size: 11px;
-      color: #B5A090;
-      font-family: Arial, sans-serif;
-      letter-spacing: 0.08em;
-    }
-    footer a { color: #B5A090; text-decoration: none; }
-    footer a:hover { color: #2C2420; }
-  .card-hover {
-  position: absolute;
-  bottom: -100%;
-  left: 0;
-  width: 100%;
-  background: rgba(44,36,32,0.88);
-  padding: 20px;
-  transition: 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.card-hover p {
-  font-size: 12px;
-  color: #F5EFE6;
-  font-family: Arial, sans-serif;
-  letter-spacing: 0.04em;
-  line-height: 1.5;
-}
-.card-img:hover .card-hover {
-  bottom: 0;
-}</style>
+  </style>
 </head>
 <body>
 
-<div class="cards" id="cards">
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Supplier disruption risk detected — East Asia logistics corridor</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Lead time increase flagged on critical raw materials — 14 day delay projected</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ Inventory rebalance complete — 3 SKUs restocked across distribution network</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Cost variance detected — Vendor pricing 12% above baseline</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Demand spike detected — Widget B demand up 34% week over week</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ Supplier risk score updated — Apex Manufacturing rated Low Risk</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Stockout risk — Widget D projected to deplete in 8 days</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Freight cost increase — Trans-Pacific shipping rates up 18%</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ Reorder triggered — Widget B reorder quantity 200 units approved</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Compliance flag — United Freight SLA breach — 3rd consecutive week</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Capacity constraint detected — Production plant at 94% utilization</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ AI recommendation accepted — Dual sourcing strategy activated for Electronics</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Supplier disruption risk detected — East Asia logistics corridor</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Lead time increase flagged on critical raw materials — 14 day delay projected</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ Inventory rebalance complete — 3 SKUs restocked across distribution network</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Cost variance detected — Vendor pricing 12% above baseline</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Demand spike detected — Widget B demand up 34% week over week</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ Supplier risk score updated — Apex Manufacturing rated Low Risk</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Stockout risk — Widget D projected to deplete in 8 days</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Freight cost increase — Trans-Pacific shipping rates up 18%</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ Reorder triggered — Widget B reorder quantity 200 units approved</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-warning">⚠ Compliance flag — United Freight SLA breach — 3rd consecutive week</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-alert">↑ Capacity constraint detected — Production plant at 94% utilization</span></span>
+    <span class="ticker-item"><span class="ticker-dot"></span><span class="ticker-normal">✓ AI recommendation accepted — Dual sourcing strategy activated for Electronics</span></span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Sumiyo Analysis</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-arch-1"></div>
+  <div class="hero-arch-2"></div>
+  <div class="hero-arch-3"></div>
+  <div class="hero-content">
+    <div class="hero-label">Supply Chain · Data · Strategy</div>
+    <div class="hero-title">Sumiyo Analysis</div>
+    <div class="hero-sub">Data &nbsp;·&nbsp; Analytics &nbsp;·&nbsp; Strategy</div>
+  </div>
+</div>
+
+<section class="projects">
+  <div class="projects-header">
+    <div class="projects-title">Selected Projects</div>
+    <div class="arrows">
+      <button class="arrow" onclick="scrollCards(-1)">&#8592;</button>
+      <button class="arrow" onclick="scrollCards(1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="cards" id="cards">
     <div class="card" onclick="window.location='ai-assistant.html'">
       <div class="card-img c1">
         <span class="card-tag">Python · AI</span>
@@ -331,69 +372,11 @@
       <div class="card-desc">Auto-generating weekly supply chain intelligence reports</div>
     </div>
   </div>
-
-<nav>
-  <a href="index.html" class="nav-logo">Sumiyo Analysis</a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="#">Projects</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-</nav>
-
-<div class="hero">
-  <div class="hero-arch-1"></div>
-  <div class="hero-arch-2"></div>
-  <div class="hero-arch-3"></div>
-  <div class="hero-content">
-    <div class="hero-label">Supply Chain · Data · Strategy</div>
-    <div class="hero-title">Sumiyo Analysis</div>
-    <div class="hero-sub">Data &nbsp;·&nbsp; Analytics &nbsp;·&nbsp; Strategy</div>
-  </div>
-</div>
-
-<section class="projects">
-  <div class="projects-header">
-    <div class="projects-title">Selected Projects</div>
-    <div class="arrows">
-      <button class="arrow" onclick="scrollCards(-1)">&#8592;</button>
-      <button class="arrow" onclick="scrollCards(1)">&#8594;</button>
-    </div>
-  </div>
-  <div class="cards" id="cards">
-    <div class="card" onclick="window.location='ai-assistant.html'">
-      <div class="card-img c1">
-        <span class="card-tag">Python · AI</span>
-      </div>
-      <div class="card-name">AI Supply Chain Assistant</div>
-      <div class="card-desc">AI-powered chat for inventory analysis and reorder recommendations</div>
-    </div>
-    <div class="card" onclick="window.location='supplier-risk.html'">
-      <div class="card-img c2">
-        <span class="card-tag">Power BI · Excel</span>
-      </div>
-      <div class="card-name">Supplier Risk Tracker</div>
-      <div class="card-desc">Real-time supplier scoring with risk flags and performance trends</div>
-    </div>
-    <div class="card">
-      <div class="card-img c3">
-        <span class="card-tag">Python · AI</span>
-      </div>
-      <div class="card-name">Live Briefing Tool</div>
-      <div class="card-desc">Auto-generating weekly supply chain intelligence reports</div>
-    </div>
-  </div>
 </section>
 
 <footer>
   <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
   <button class="contact-btn" onclick="window.location='mailto:sumiyosheikh@gmail.com'">Get in touch</button>
-</footer>
-
-<footer>
-  <p>sumiyosheikh@gmail.com</p>
-  <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
 </footer>
 
 <script>
