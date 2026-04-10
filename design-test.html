@@ -1,0 +1,30 @@
+<section class="tool">
+  <h2>Supplier Decision Engine</h2>
+
+  <label>Cost ($)</label>
+  <input type="range" id="costRange" min="10" max="100">
+
+  <label>Speed (Days)</label>
+  <input type="range" id="speedRange" min="1" max="30">
+
+  <label>Reliability (%)</label>
+  <input type="range" id="reliabilityRange" min="50" max="100">
+
+  <h3 id="result">Score: --</h3>
+</section>
+
+<script>
+function calculateScore() {
+  let cost = document.getElementById("costRange").value;
+  let speed = document.getElementById("speedRange").value;
+  let reliability = document.getElementById("reliabilityRange").value;
+
+  let score = (100 - cost) * 0.4 + (30 - speed) * 0.3 + reliability * 0.3;
+
+  document.getElementById("result").innerText = "Score: " + score.toFixed(2);
+}
+
+document.querySelectorAll("input").forEach(input => {
+  input.addEventListener("input", calculateScore);
+});
+</script>
