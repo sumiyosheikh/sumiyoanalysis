@@ -4,122 +4,288 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Supply Chain Assistant — Sumiyo Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --font-main: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --bg-main: #07111f;
+      --bg-secondary: #0b1728;
+      --card-bg: rgba(15, 28, 48, 0.78);
+      --card-border: rgba(120, 170, 255, 0.16);
+      --text-primary: #f3f7ff;
+      --text-secondary: #9fb3c8;
+      --text-muted: #6f8399;
+      --accent-blue: #69a7ff;
+      --accent-cyan: #57e3ff;
+      --accent-purple: #8f7cff;
+      --accent-green: #4ee29a;
+      --accent-warning: #ffb86b;
+      --accent-danger: #ff6f91;
+      --glow-blue: 0 0 30px rgba(87, 227, 255, 0.16);
+      --glow-soft: 0 10px 35px rgba(0, 0, 0, 0.28);
+      --glow-card: 0 8px 25px rgba(80, 140, 255, 0.10);
+      --panel-gradient: linear-gradient(135deg, rgba(103,168,255,0.12), rgba(87,227,255,0.06), rgba(143,124,255,0.08));
+      --button-gradient: linear-gradient(135deg, #5ea8ff, #57e3ff);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Georgia, serif; background: #F8F4EE; color: #2C2420; }
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 22px 52px; background: #B5A090; }
-    .nav-logo { font-size: 13px; letter-spacing: 0.2em; color: #F5EFE6; text-transform: uppercase; text-decoration: none; }
-    .nav-links { display: flex; gap: 40px; list-style: none; }
-    .nav-links a { font-size: 12px; color: #F5EFE6; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; font-family: Arial, sans-serif; opacity: 0.85; transition: opacity 0.2s; }
-    .nav-links a:hover { opacity: 1; }
-    .hero { background: #B5A090; padding: 48px 52px; border-bottom: 0.5px solid #A09080; }
-    .hero-label { font-size: 11px; letter-spacing: 0.25em; color: rgba(245,239,230,0.7); text-transform: uppercase; font-family: Arial, sans-serif; margin-bottom: 12px; }
-    .hero-title { font-size: 42px; color: #F5EFE6; font-weight: 400; margin-bottom: 10px; }
-    .hero-sub { font-size: 13px; color: rgba(245,239,230,0.75); font-family: Arial, sans-serif; letter-spacing: 0.06em; }
-    .main { max-width: 1100px; margin: 0 auto; padding: 52px; }
-    .section-title { font-size: 24px; color: #2C2420; font-weight: 400; margin-bottom: 24px; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 52px; font-family: Arial, sans-serif; }
-    th { background: #B5A090; color: #F5EFE6; padding: 12px 16px; text-align: left; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400; }
-    td { padding: 12px 16px; border-bottom: 0.5px solid #E8E0D8; font-size: 13px; color: #3D3530; }
-    tr:hover td { background: #F5F0E8; }
-    .risk-high { color: #C0392B; font-weight: 500; }
-    .risk-low { color: #27AE60; font-weight: 500; }
-    .risk-medium { color: #E67E22; font-weight: 500; }
-    .chat-section { background: #FFFFFF; border-radius: 8px; border: 0.5px solid #E8E0D8; overflow: hidden; }
-    .chat-header { background: #B5A090; padding: 16px 24px; display: flex; align-items: center; gap: 10px; }
-    .chat-dot { width: 8px; height: 8px; border-radius: 50%; background: #F5EFE6; opacity: 0.7; }
-    .chat-header-text { font-size: 13px; color: #F5EFE6; letter-spacing: 0.08em; font-family: Arial, sans-serif; text-transform: uppercase; }
-    .chat-messages { height: 340px; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .msg { max-width: 80%; padding: 12px 16px; border-radius: 8px; font-size: 13px; line-height: 1.7; font-family: Arial, sans-serif; }
-    .msg-ai { background: #F5F0E8; color: #3D3530; align-self: flex-start; border: 0.5px solid #E8E0D8; }
-    .msg-user { background: #B5A090; color: #F5EFE6; align-self: flex-end; }
-    .chat-input-area { display: flex; border-top: 0.5px solid #E8E0D8; }
-    .chat-input { flex: 1; padding: 16px 20px; border: none; outline: none; font-size: 13px; font-family: Arial, sans-serif; color: #3D3530; background: #FFFFFF; }
-    .chat-input::placeholder { color: #C4B8A8; }
-    .chat-send { padding: 16px 28px; background: #B5A090; color: #F5EFE6; border: none; cursor: pointer; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-family: Arial, sans-serif; transition: background 0.2s; }
-    .chat-send:hover { background: #A09080; }
-    .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
-    .back-link { display: inline-block; margin-bottom: 32px; font-size: 12px; color: #9E8E80; text-decoration: none; letter-spacing: 0.08em; font-family: Arial, sans-serif; text-transform: uppercase; transition: color 0.2s; }
-    .back-link:hover { color: #2C2420; }
-    footer { padding: 28px 52px; border-top: 0.5px solid #E8E0D8; display: flex; justify-content: space-between; margin-top: 52px; }
-    footer p { font-size: 12px; color: #9E8E80; font-family: Arial, sans-serif; }
-    footer a { color: #9E8E80; }
+
+    body {
+      font-family: var(--font-main);
+      background:
+        radial-gradient(circle at top left, rgba(87,227,255,0.08), transparent 30%),
+        radial-gradient(circle at top right, rgba(143,124,255,0.10), transparent 28%),
+        linear-gradient(180deg, #08111d 0%, #0a1422 45%, #07111f 100%);
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .layout { display: flex; flex: 1; min-height: 100vh; }
+
+    .sidebar {
+      width: 260px;
+      background: rgba(11, 23, 40, 0.95);
+      border-right: 1px solid var(--card-border);
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      backdrop-filter: blur(20px);
+    }
+    .sidebar-logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      padding: 0 28px 28px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+      text-decoration: none;
+      display: block;
+    }
+    .sidebar-section { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: var(--text-muted); text-transform: uppercase; padding: 0 28px 12px; }
+    .nav-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 28px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: var(--text-secondary); font-size: 13px; font-weight: 400; }
+    .nav-item:hover { background: rgba(105,167,255,0.06); color: var(--text-primary); }
+    .nav-item.active { background: rgba(105,167,255,0.08); color: var(--text-primary); border-left: 2px solid var(--accent-cyan); padding-left: 26px; }
+    .nav-badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
+    .badge-live { background: rgba(78,226,154,0.12); color: var(--accent-green); }
+    .badge-alert { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
+    .badge-new { background: rgba(105,167,255,0.12); color: var(--accent-blue); }
+
+    .sidebar-signals { margin-top: auto; padding: 24px 28px; border-top: 1px solid var(--card-border); }
+    .signal-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
+    .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); }
+    .signal-val { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 4px; }
+    .sig-high { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
+    .sig-med { background: rgba(255,184,107,0.12); color: var(--accent-warning); }
+    .sig-low { background: rgba(78,226,154,0.12); color: var(--accent-green); }
+
+    .main { flex: 1; padding: 44px 52px; overflow-y: auto; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: 0.06em; margin-bottom: 20px; transition: color 0.2s; }
+    .back-link:hover { color: var(--accent-cyan); }
+    .page-title { font-size: 26px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.03em; }
+    .page-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 580px; margin-bottom: 32px; }
+
+    .section-glow { height: 1px; background: linear-gradient(90deg, transparent, rgba(87,227,255,0.35), transparent); box-shadow: var(--glow-blue); margin: 28px 0; }
+
+    .table-section {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+      margin-bottom: 28px;
+    }
+    .table-header { padding: 20px 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .table-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+    .table-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 12px 20px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--card-border); background: rgba(11,23,40,0.4); }
+    td { padding: 14px 20px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid rgba(120,170,255,0.06); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(105,167,255,0.04); }
+    .risk-high { color: var(--accent-danger); font-weight: 500; }
+    .risk-low { color: var(--accent-green); font-weight: 500; }
+    .risk-medium { color: var(--accent-warning); font-weight: 500; }
+
+    .chat-section {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+      margin-bottom: 28px;
+    }
+    .chat-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(11,23,40,0.4);
+    }
+    .chat-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .dot-green { background: var(--accent-green); box-shadow: 0 0 8px rgba(78,226,154,0.4); }
+    .dot-yellow { background: var(--accent-warning); }
+    .dot-red { background: var(--accent-danger); }
+    .chat-header-text { font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
+    .chat-status { margin-left: auto; font-size: 11px; color: var(--accent-green); background: rgba(78,226,154,0.1); padding: 3px 10px; border-radius: 4px; }
+
+    .chat-messages {
+      height: 360px;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(120,170,255,0.2); border-radius: 2px; }
+
+    .msg { max-width: 78%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.7; }
+    .msg-ai { background: rgba(105,167,255,0.08); color: var(--text-secondary); align-self: flex-start; border: 1px solid rgba(120,170,255,0.12); }
+    .msg-user { background: rgba(87,227,255,0.1); color: var(--text-primary); align-self: flex-end; border: 1px solid rgba(87,227,255,0.2); }
+
+    .chat-input-area { display: flex; border-top: 1px solid var(--card-border); }
+    .chat-input { flex: 1; padding: 16px 20px; border: none; outline: none; font-size: 13px; font-family: var(--font-main); color: var(--text-primary); background: transparent; letter-spacing: -0.01em; }
+    .chat-input::placeholder { color: var(--text-muted); }
+    .chat-send {
+      padding: 16px 28px;
+      background: rgba(87,227,255,0.1);
+      color: var(--accent-cyan);
+      border: none;
+      border-left: 1px solid var(--card-border);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: var(--font-main);
+      transition: all 0.2s;
+    }
+    .chat-send:hover { background: rgba(87,227,255,0.18); }
+    .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    footer { padding: 18px 52px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,23,40,0.8); }
+    footer a { color: var(--text-muted); text-decoration: none; font-size: 11px; transition: color 0.2s; }
+    footer a:hover { color: var(--accent-cyan); }
+    .contact-btn { padding: 9px 22px; background: rgba(14,27,46,0.88); border: 1px solid rgba(105,167,255,0.18); border-radius: 10px; color: var(--text-secondary); font-size: 11px; font-weight: 500; font-family: var(--font-main); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); }
   </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">Sumiyo Analysis</a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="index.html">Projects</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-</nav>
-
-<div class="hero">
-  <div class="hero-label">Project 01 — AI Tools</div>
-  <div class="hero-title">AI Supply Chain Assistant</div>
-  <div class="hero-sub">Ask Questions About Inventory Data · Get Real-Time AI Recommendations</div>
-</div>
-
-<div class="main">
-  <a href="index.html" class="back-link">← Back To Projects</a>
-  <div class="section-title">Current Inventory</div>
-  <table>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Stock Level</th>
-        <th>Reorder Point</th>
-        <th>Monthly Demand</th>
-        <th>Lead Time (days)</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Widget A</td><td>150</td><td>100</td><td>120</td><td>7</td><td class="risk-low">Healthy</td></tr>
-      <tr><td>Widget B</td><td>20</td><td>50</td><td>80</td><td>14</td><td class="risk-high">Critical</td></tr>
-      <tr><td>Widget C</td><td>500</td><td>200</td><td>150</td><td>5</td><td class="risk-low">Healthy</td></tr>
-      <tr><td>Widget D</td><td>8</td><td>30</td><td>25</td><td>21</td><td class="risk-high">Critical</td></tr>
-      <tr><td>Widget E</td><td>75</td><td>60</td><td>90</td><td>10</td><td class="risk-medium">Watch</td></tr>
-    </tbody>
-  </table>
-
-  <div class="section-title">Ask The AI</div>
-  <div class="chat-section">
-    <div class="chat-header">
-      <div class="chat-dot"></div>
-      <div class="chat-dot"></div>
-      <div class="chat-dot"></div>
-      <div class="chat-header-text">Supply Chain AI — Powered By Gemini</div>
+<div class="layout">
+  <div class="sidebar">
+    <a href="index.html" class="sidebar-logo">Sumiyo Analysis</a>
+    <div class="sidebar-section">Modules</div>
+    <a href="index.html" class="nav-item">
+      Command Overview
+      <span class="nav-badge badge-live">Live</span>
+    </a>
+    <a href="supplier-risk.html" class="nav-item">
+      Supplier Risk Matrix
+      <span class="nav-badge badge-alert">8</span>
+    </a>
+    <a href="ai-assistant.html" class="nav-item active">
+      Alert Center
+      <span class="nav-badge badge-alert">5</span>
+    </a>
+    <a href="#" class="nav-item">
+      Project 4
+      <span class="nav-badge badge-new">Soon</span>
+    </a>
+    <a href="#" class="nav-item">
+      Project 5
+      <span class="nav-badge badge-new">Soon</span>
+    </a>
+    <div class="sidebar-signals">
+      <div class="signal-label">Signals</div>
+      <div class="signal-item">Stockout Pressure <span class="signal-val sig-med">Med</span></div>
+      <div class="signal-item">Freight Variance <span class="signal-val sig-high">High</span></div>
+      <div class="signal-item">Supplier Stability <span class="signal-val sig-low">Low</span></div>
     </div>
-    <div class="chat-messages" id="messages">
-      <div class="msg msg-ai">Hello! I am your supply chain analyst. I can see the current inventory data above. Ask me anything, which products need reordering, demand forecasts, risk analysis, or recommendations.</div>
+  </div>
+
+  <div class="main">
+    <a href="index.html" class="back-link">← Back to Command Overview</a>
+
+    <div class="page-title">AI Supply Chain Assistant</div>
+    <div class="page-sub">Ask questions about inventory data and get real-time AI-powered recommendations.</div>
+
+    <div class="section-glow"></div>
+
+    <div class="table-section">
+      <div class="table-header">
+        <div>
+          <div class="table-title">Current Inventory</div>
+          <div class="table-sub">Live inventory status across monitored SKUs</div>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Stock Level</th>
+            <th>Reorder Point</th>
+            <th>Monthly Demand</th>
+            <th>Lead Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget A</td><td>150</td><td>100</td><td>120</td><td>7 days</td><td class="risk-low">Healthy</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget B</td><td>20</td><td>50</td><td>80</td><td>14 days</td><td class="risk-high">Critical</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget C</td><td>500</td><td>200</td><td>150</td><td>5 days</td><td class="risk-low">Healthy</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget D</td><td>8</td><td>30</td><td>25</td><td>21 days</td><td class="risk-high">Critical</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget E</td><td>75</td><td>60</td><td>90</td><td>10 days</td><td class="risk-medium">Watch</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="chat-input-area">
-      <input type="text" class="chat-input" id="userInput" placeholder="e.g. Which products are at risk of stocking out?" />
-      <button class="chat-send" id="sendBtn" onclick="sendMessage()">Send</button>
+
+    <div class="chat-section">
+      <div class="chat-header">
+        <div class="chat-dot dot-green"></div>
+        <div class="chat-dot dot-yellow"></div>
+        <div class="chat-dot dot-red"></div>
+        <div class="chat-header-text">Supply Chain AI</div>
+        <div class="chat-status">Connected</div>
+      </div>
+      <div class="chat-messages" id="messages">
+        <div class="msg msg-ai">Hello. I have access to your current inventory data. Ask me anything — which products need reordering, demand forecasts, risk analysis, or operational recommendations.</div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="userInput" placeholder="e.g. Which products are at risk of stocking out?" />
+        <button class="chat-send" id="sendBtn" onclick="sendMessage()">Send</button>
+      </div>
     </div>
   </div>
 </div>
 
 <footer>
-  <p>sumiyosheikh@gmail.com</p>
-  <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
+  <a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a>
+  <button class="contact-btn" onclick="window.location='mailto:sumiyosheikh@gmail.com'">Get in touch</button>
 </footer>
 
 <script>
   const SERVER_URL = "https://sumiyo-api.onrender.com";
 
   const inventoryData = `
-Product | Stock Level | Reorder Point | Monthly Demand | Lead Time (days) | Status
-Widget A | 150 | 100 | 120 | 7 | Healthy
-Widget B | 20 | 50 | 80 | 14 | Critical
-Widget C | 500 | 200 | 150 | 5 | Healthy
-Widget D | 8 | 30 | 25 | 21 | Critical
-Widget E | 75 | 60 | 90 | 10 | Watch
+Product | Stock Level | Reorder Point | Monthly Demand | Lead Time | Status
+Widget A | 150 | 100 | 120 | 7 days | Healthy
+Widget B | 20 | 50 | 80 | 14 days | Critical
+Widget C | 500 | 200 | 150 | 5 days | Healthy
+Widget D | 8 | 30 | 25 | 21 days | Critical
+Widget E | 75 | 60 | 90 | 10 days | Watch
   `;
 
   async function sendMessage() {
@@ -139,16 +305,12 @@ Widget E | 75 | 60 | 90 | 10 | Watch
       const response = await fetch(`${SERVER_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: question,
-          inventory: inventoryData
-        })
+        body: JSON.stringify({ question, inventory: inventoryData })
       });
-
       const data = await response.json();
       messages.innerHTML += `<div class="msg msg-ai">${data.answer}</div>`;
     } catch (err) {
-      messages.innerHTML += `<div class="msg msg-ai">Sorry, something went wrong. Please try again.</div>`;
+      messages.innerHTML += `<div class="msg msg-ai">Connection error. Please try again in a moment.</div>`;
     }
 
     sendBtn.disabled = false;
@@ -156,7 +318,10 @@ Widget E | 75 | 60 | 90 | 10 | Watch
     messages.scrollTop = messages.scrollHeight;
   }
 
-  document.getElementById('userInput').addEventListener('keypress', function(e) {
+  document.getElementById('userInput').addEventListener('keypress', e => {
     if (e.key === 'Enter') sendMessage();
   });
 </script>
+
+</body>
+</html>
