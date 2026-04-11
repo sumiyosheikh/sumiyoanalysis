@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Supplier Risk Tracker — Sumiyo Analysis</title>
+  <title>AI Supply Chain Assistant — Sumiyo Analysis</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --font-main: "Inter", "Segoe UI", Arial, sans-serif;
+      --font-main: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --bg-main: #07111f;
+      --bg-secondary: #0b1728;
       --card-bg: rgba(15, 28, 48, 0.78);
       --card-border: rgba(120, 170, 255, 0.16);
       --text-primary: #f3f7ff;
@@ -15,12 +17,15 @@
       --text-muted: #6f8399;
       --accent-blue: #69a7ff;
       --accent-cyan: #57e3ff;
+      --accent-purple: #8f7cff;
       --accent-green: #4ee29a;
       --accent-warning: #ffb86b;
       --accent-danger: #ff6f91;
-      --glow-soft: 0 10px 35px rgba(0,0,0,0.28);
-      --glow-card: 0 8px 25px rgba(80,140,255,0.10);
-      --panel-gradient: linear-gradient(135deg,rgba(103,168,255,0.12),rgba(87,227,255,0.06),rgba(143,124,255,0.08));
+      --glow-blue: 0 0 30px rgba(87, 227, 255, 0.16);
+      --glow-soft: 0 10px 35px rgba(0, 0, 0, 0.28);
+      --glow-card: 0 8px 25px rgba(80, 140, 255, 0.10);
+      --panel-gradient: linear-gradient(135deg, rgba(103,168,255,0.12), rgba(87,227,255,0.06), rgba(143,124,255,0.08));
+      --button-gradient: linear-gradient(135deg, #5ea8ff, #57e3ff);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,9 +33,9 @@
     body {
       font-family: var(--font-main);
       background:
-        radial-gradient(circle at top left,rgba(87,227,255,0.08),transparent 30%),
-        radial-gradient(circle at top right,rgba(143,124,255,0.10),transparent 28%),
-        linear-gradient(180deg,#08111d 0%,#0a1422 45%,#07111f 100%);
+        radial-gradient(circle at top left, rgba(87,227,255,0.08), transparent 30%),
+        radial-gradient(circle at top right, rgba(143,124,255,0.10), transparent 28%),
+        linear-gradient(180deg, #08111d 0%, #0a1422 45%, #07111f 100%);
       color: var(--text-primary);
       letter-spacing: -0.01em;
       min-height: 100vh;
@@ -42,7 +47,7 @@
 
     .sidebar {
       width: 260px;
-      background: rgba(11,23,40,0.95);
+      background: rgba(11, 23, 40, 0.95);
       border-right: 1px solid var(--card-border);
       padding: 32px 0;
       display: flex;
@@ -50,137 +55,130 @@
       flex-shrink: 0;
       backdrop-filter: blur(20px);
     }
-    .sidebar-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; color: var(--text-primary); text-transform: uppercase; padding: 0 28px 28px; border-bottom: 1px solid var(--card-border); margin-bottom: 24px; text-decoration: none; display: block; }
-    .sidebar-section { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--text-muted); text-transform: uppercase; padding: 0 28px 12px; }
-    .nav-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 28px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: var(--text-secondary); font-size: 13px; font-weight: 500; }
+    .sidebar-logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      padding: 0 28px 28px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+      text-decoration: none;
+      display: block;
+    }
+    .sidebar-section { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: var(--text-muted); text-transform: uppercase; padding: 0 28px 12px; }
+    .nav-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 28px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: var(--text-secondary); font-size: 13px; font-weight: 400; }
     .nav-item:hover { background: rgba(105,167,255,0.06); color: var(--text-primary); }
     .nav-item.active { background: rgba(105,167,255,0.08); color: var(--text-primary); border-left: 2px solid var(--accent-cyan); padding-left: 26px; }
-    .nav-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+    .nav-badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
     .badge-live { background: rgba(78,226,154,0.12); color: var(--accent-green); }
     .badge-alert { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
     .badge-new { background: rgba(105,167,255,0.12); color: var(--accent-blue); }
+
     .sidebar-signals { margin-top: auto; padding: 24px 28px; border-top: 1px solid var(--card-border); }
-    .signal-label { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
-    .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; font-weight: 500; color: var(--text-secondary); }
-    .signal-val { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 4px; }
+    .signal-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
+    .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); }
+    .signal-val { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 4px; }
     .sig-high { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
     .sig-med { background: rgba(255,184,107,0.12); color: var(--accent-warning); }
     .sig-low { background: rgba(78,226,154,0.12); color: var(--accent-green); }
 
     .main { flex: 1; padding: 44px 52px; overflow-y: auto; }
 
-    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.04em; margin-bottom: 20px; transition: color 0.2s; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: 0.06em; margin-bottom: 20px; transition: color 0.2s; }
     .back-link:hover { color: var(--accent-cyan); }
+    .page-title { font-size: 26px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.03em; }
+    .page-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 580px; margin-bottom: 32px; }
 
-    .page-header { margin-bottom: 8px; display: flex; justify-content: space-between; align-items: flex-start; }
-    .page-title { font-size: 26px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.03em; margin-bottom: 6px; }
-    .page-sub { font-size: 13px; font-weight: 400; color: var(--text-muted); line-height: 1.6; max-width: 520px; }
-    .system-status { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-cyan); background: rgba(87,227,255,0.08); border: 1px solid rgba(87,227,255,0.18); padding: 5px 12px; border-radius: 6px; display: flex; align-items: center; gap: 6px; }
-    .status-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-cyan); box-shadow: 0 0 8px rgba(87,227,255,0.6); animation: pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
-
-    .section-glow { height: 1px; background: linear-gradient(90deg,transparent,rgba(87,227,255,0.3),transparent); margin: 24px 0; }
-
-    .metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
-    .metric-card {
-      background: var(--panel-gradient), var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 20px;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--glow-soft), var(--glow-card);
-      transition: all 0.25s;
-      cursor: default;
-    }
-    .metric-card:hover { border-color: rgba(87,227,255,0.28); transform: translateY(-3px); box-shadow: var(--glow-soft), 0 0 28px rgba(87,227,255,0.1); }
-    .metric-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
-    .metric-value { font-size: 30px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px; }
-    .metric-delta { font-size: 11px; font-weight: 500; }
-    .delta-up { color: var(--accent-green); }
-    .delta-down { color: var(--accent-danger); }
+    .section-glow { height: 1px; background: linear-gradient(90deg, transparent, rgba(87,227,255,0.35), transparent); box-shadow: var(--glow-blue); margin: 28px 0; }
 
     .table-section {
       background: var(--panel-gradient), var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       backdrop-filter: blur(16px);
       box-shadow: var(--glow-soft), var(--glow-card);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
-    .table-header { padding: 18px 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,23,40,0.3); }
-    .table-title { font-size: 13px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
-    .table-sub { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
-    .table-badge { font-size: 10px; font-weight: 600; background: rgba(105,167,255,0.1); color: var(--accent-blue); padding: 3px 10px; border-radius: 4px; letter-spacing: 0.06em; }
+    .table-header { padding: 20px 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .table-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+    .table-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
 
     table { width: 100%; border-collapse: collapse; }
-    th { padding: 11px 20px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--card-border); background: rgba(11,23,40,0.2); }
-    td { padding: 13px 20px; font-size: 13px; font-weight: 400; color: var(--text-secondary); border-bottom: 1px solid rgba(120,170,255,0.05); transition: all 0.2s; }
-    tr { transition: all 0.2s; }
+    th { padding: 12px 20px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--card-border); background: rgba(11,23,40,0.4); }
+    td { padding: 14px 20px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid rgba(120,170,255,0.06); }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(105,167,255,0.05); transform: translateY(-1px); }
-    tr:hover td:first-child { border-left: 2px solid rgba(87,227,255,0.3); padding-left: 18px; }
+    tr:hover td { background: rgba(105,167,255,0.04); }
+    .risk-high { color: var(--accent-danger); font-weight: 500; }
+    .risk-low { color: var(--accent-green); font-weight: 500; }
+    .risk-medium { color: var(--accent-warning); font-weight: 500; }
 
-    .risk-dot { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 12px; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .dot-danger { background: var(--accent-danger); box-shadow: 0 0 7px rgba(255,111,145,0.5); }
-    .dot-warning { background: var(--accent-warning); box-shadow: 0 0 7px rgba(255,184,107,0.4); }
-    .dot-success { background: var(--accent-green); box-shadow: 0 0 7px rgba(78,226,154,0.4); }
-    .risk-high { color: var(--accent-danger); }
-    .risk-medium { color: var(--accent-warning); }
-    .risk-low { color: var(--accent-green); }
-
-    .score-wrap { display: inline-flex; align-items: center; gap: 9px; }
-    .bar-track { width: 72px; height: 5px; background: rgba(120,170,255,0.1); border-radius: 3px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
-
-    .rec-section {
+    .chat-section {
       background: var(--panel-gradient), var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
       backdrop-filter: blur(16px);
       box-shadow: var(--glow-soft), var(--glow-card);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
-    .rec-section-header { padding: 18px 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,23,40,0.3); }
-    .rec-section-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-    .rec-section-badge { font-size: 10px; font-weight: 600; background: rgba(255,111,145,0.1); color: var(--accent-danger); padding: 3px 10px; border-radius: 4px; }
-
-    .rec-item {
-      padding: 20px 24px;
-      border-bottom: 1px solid rgba(120,170,255,0.05);
+    .chat-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--card-border);
       display: flex;
-      gap: 16px;
-      align-items: flex-start;
+      align-items: center;
+      gap: 10px;
+      background: rgba(11,23,40,0.4);
+    }
+    .chat-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .dot-green { background: var(--accent-green); box-shadow: 0 0 8px rgba(78,226,154,0.4); }
+    .dot-yellow { background: var(--accent-warning); }
+    .dot-red { background: var(--accent-danger); }
+    .chat-header-text { font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
+    .chat-status { margin-left: auto; font-size: 11px; color: var(--accent-green); background: rgba(78,226,154,0.1); padding: 3px 10px; border-radius: 4px; }
+
+    .chat-messages {
+      height: 360px;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(120,170,255,0.2); border-radius: 2px; }
+
+    .msg { max-width: 78%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.7; }
+    .msg-ai { background: rgba(105,167,255,0.08); color: var(--text-secondary); align-self: flex-start; border: 1px solid rgba(120,170,255,0.12); }
+    .msg-user { background: rgba(87,227,255,0.1); color: var(--text-primary); align-self: flex-end; border: 1px solid rgba(87,227,255,0.2); }
+
+    .chat-input-area { display: flex; border-top: 1px solid var(--card-border); }
+    .chat-input { flex: 1; padding: 16px 20px; border: none; outline: none; font-size: 13px; font-family: var(--font-main); color: var(--text-primary); background: transparent; letter-spacing: -0.01em; }
+    .chat-input::placeholder { color: var(--text-muted); }
+    .chat-send {
+      padding: 16px 28px;
+      background: rgba(87,227,255,0.1);
+      color: var(--accent-cyan);
+      border: none;
+      border-left: 1px solid var(--card-border);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: var(--font-main);
       transition: all 0.2s;
     }
-    .rec-item:last-child { border-bottom: none; }
-    .rec-item:hover { background: rgba(105,167,255,0.04); }
-
-    .rec-indicator { width: 3px; border-radius: 2px; flex-shrink: 0; align-self: stretch; min-height: 40px; }
-    .ind-danger { background: var(--accent-danger); box-shadow: 0 0 8px rgba(255,111,145,0.3); }
-    .ind-warning { background: var(--accent-warning); box-shadow: 0 0 8px rgba(255,184,107,0.25); }
-    .ind-success { background: var(--accent-green); box-shadow: 0 0 8px rgba(78,226,154,0.25); }
-
-    .rec-content { flex: 1; }
-    .rec-type { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 5px; }
-    .type-danger { color: var(--accent-danger); }
-    .type-warning { color: var(--accent-warning); }
-    .type-success { color: var(--accent-green); }
-    .rec-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; letter-spacing: -0.01em; }
-    .rec-desc { font-size: 12px; font-weight: 400; color: var(--text-muted); line-height: 1.65; margin-bottom: 10px; }
-    .rec-confidence { font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
-    .conf-bar { width: 60px; height: 3px; background: rgba(120,170,255,0.1); border-radius: 2px; overflow: hidden; }
-    .conf-fill { height: 100%; border-radius: 2px; }
-    .conf-cyan { background: var(--accent-cyan); }
-    .conf-warning { background: var(--accent-warning); }
-    .conf-green { background: var(--accent-green); }
+    .chat-send:hover { background: rgba(87,227,255,0.18); }
+    .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
     footer { padding: 18px 52px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,23,40,0.8); }
-    footer a { color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; transition: color 0.2s; }
+    footer a { color: var(--text-muted); text-decoration: none; font-size: 11px; transition: color 0.2s; }
     footer a:hover { color: var(--accent-cyan); }
-    .contact-btn { padding: 9px 22px; background: rgba(14,27,46,0.88); border: 1px solid rgba(105,167,255,0.18); border-radius: 10px; color: var(--text-secondary); font-size: 11px; font-weight: 600; font-family: var(--font-main); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    .contact-btn { padding: 9px 22px; background: rgba(14,27,46,0.88); border: 1px solid rgba(105,167,255,0.18); border-radius: 10px; color: var(--text-secondary); font-size: 11px; font-weight: 500; font-family: var(--font-main); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
     .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); }
   </style>
 </head>
@@ -190,11 +188,26 @@
   <div class="sidebar">
     <a href="index.html" class="sidebar-logo">Sumiyo Analysis</a>
     <div class="sidebar-section">Modules</div>
-    <a href="index.html" class="nav-item">Command Overview <span class="nav-badge badge-live">Live</span></a>
-    <a href="supplier-risk.html" class="nav-item active">Supplier Risk Matrix <span class="nav-badge badge-alert">8</span></a>
-    <a href="ai-assistant.html" class="nav-item">Alert Center <span class="nav-badge badge-alert">5</span></a>
-    <a href="#" class="nav-item">Project 4 <span class="nav-badge badge-new">Soon</span></a>
-    <a href="#" class="nav-item">Project 5 <span class="nav-badge badge-new">Soon</span></a>
+    <a href="index.html" class="nav-item">
+      Command Overview
+      <span class="nav-badge badge-live">Live</span>
+    </a>
+    <a href="supplier-risk.html" class="nav-item">
+      Supplier Risk Matrix
+      <span class="nav-badge badge-alert">8</span>
+    </a>
+    <a href="ai-assistant.html" class="nav-item active">
+      Alert Center
+      <span class="nav-badge badge-alert">5</span>
+    </a>
+    <a href="#" class="nav-item">
+      Project 4
+      <span class="nav-badge badge-new">Soon</span>
+    </a>
+    <a href="#" class="nav-item">
+      Project 5
+      <span class="nav-badge badge-new">Soon</span>
+    </a>
     <div class="sidebar-signals">
       <div class="signal-label">Signals</div>
       <div class="signal-item">Stockout Pressure <span class="signal-val sig-med">Med</span></div>
@@ -204,17 +217,426 @@
   </div>
 
   <div class="main">
-    <a href="index.html" class="back-link">← Command Overview</a>
+    <a href="index.html" class="back-link">← Back to Command Overview</a>
+
+    <div class="page-title">AI Supply Chain Assistant</div>
+    <div class="page-sub">Ask questions about inventory data and get real-time AI-powered recommendations.</div>
+
+    <div class="section-glow"></div>
+
+    <div class="table-section">
+      <div class="table-header">
+        <div>
+          <div class="table-title">Current Inventory</div>
+          <div class="table-sub">Live inventory status across monitored SKUs</div>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Stock Level</th>
+            <th>Reorder Point</th>
+            <th>Monthly Demand</th>
+            <th>Lead Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget A</td><td>150</td><td>100</td><td>120</td><td>7 days</td><td class="risk-low">Healthy</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget B</td><td>20</td><td>50</td><td>80</td><td>14 days</td><td class="risk-high">Critical</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget C</td><td>500</td><td>200</td><td>150</td><td>5 days</td><td class="risk-low">Healthy</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget D</td><td>8</td><td>30</td><td>25</td><td>21 days</td><td class="risk-high">Critical</td></tr>
+          <tr><td style="color:var(--text-primary);font-weight:500">Widget E</td><td>75</td><td>60</td><td>90</td><td>10 days</td><td class="risk-medium">Watch</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chat-section">
+      <div class="chat-header">
+        <div class="chat-dot dot-green"></div>
+        <div class="chat-dot dot-yellow"></div>
+        <div class="chat-dot dot-red"></div>
+        <div class="chat-header-text">Supply Chain AI</div>
+        <div class="chat-status">Connected</div>
+      </div>
+      <div class="chat-messages" id="messages">
+        <div class="msg msg-ai">Hello. I have access to your current inventory data. Ask me anything — which products need reordering, demand forecasts, risk analysis, or operational recommendations.</div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="userInput" placeholder="e.g. Which products are at risk of stocking out?" />
+        <button class="chat-send" id="sendBtn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a>
+  <button class="contact-btn" onclick="window.location='mailto:sumiyosheikh@gmail.com'">Get in touch</button>
+</footer>
+
+<script>
+  const SERVER_URL = "https://sumiyo-api.onrender.com";
+
+  const inventoryData = `
+Product | Stock Level | Reorder Point | Monthly Demand | Lead Time | Status
+Widget A | 150 | 100 | 120 | 7 days | Healthy
+Widget B | 20 | 50 | 80 | 14 days | Critical
+Widget C | 500 | 200 | 150 | 5 days | Healthy
+Widget D | 8 | 30 | 25 | 21 days | Critical
+Widget E | 75 | 60 | 90 | 10 days | Watch
+  `;
+
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const messages = document.getElementById('messages');
+    const sendBtn = document.getElementById('sendBtn');
+    const question = input.value.trim();
+    if (!question) return;
+
+    messages.innerHTML += `<div class="msg msg-user">${question}</div>`;
+    input.value = '';
+    sendBtn.disabled = true;
+    sendBtn.textContent = '...';
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const response = await fetch(`${SERVER_URL}/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question, inventory: inventoryData })
+      });
+      const data = await response.json();
+      messages.innerHTML += `<div class="msg msg-ai">${data.answer}</div>`;
+    } catch (err) {
+      messages.innerHTML += `<div class="msg msg-ai">Connection error. Please try again in a moment.</div>`;
+    }
+
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Send';
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  document.getElementById('userInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplier Risk Tracker — Sumiyo Analysis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-main: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --bg-main: #07111f;
+      --bg-secondary: #0b1728;
+      --card-bg: rgba(15, 28, 48, 0.78);
+      --card-border: rgba(120, 170, 255, 0.16);
+      --text-primary: #f3f7ff;
+      --text-secondary: #9fb3c8;
+      --text-muted: #6f8399;
+      --accent-blue: #69a7ff;
+      --accent-cyan: #57e3ff;
+      --accent-purple: #8f7cff;
+      --accent-green: #4ee29a;
+      --accent-warning: #ffb86b;
+      --accent-danger: #ff6f91;
+      --glow-blue: 0 0 30px rgba(87, 227, 255, 0.16);
+      --glow-soft: 0 10px 35px rgba(0, 0, 0, 0.28);
+      --glow-card: 0 8px 25px rgba(80, 140, 255, 0.10);
+      --panel-gradient: linear-gradient(135deg, rgba(103,168,255,0.12), rgba(87,227,255,0.06), rgba(143,124,255,0.08));
+      --button-gradient: linear-gradient(135deg, #5ea8ff, #57e3ff);
+      --border-glow: linear-gradient(135deg, rgba(105,167,255,0.45), rgba(87,227,255,0.18), rgba(143,124,255,0.22));
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-main);
+      background:
+        radial-gradient(circle at top left, rgba(87,227,255,0.08), transparent 30%),
+        radial-gradient(circle at top right, rgba(143,124,255,0.10), transparent 28%),
+        linear-gradient(180deg, #08111d 0%, #0a1422 45%, #07111f 100%);
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .layout { display: flex; flex: 1; min-height: 100vh; }
+
+    .sidebar {
+      width: 260px;
+      background: rgba(11, 23, 40, 0.95);
+      border-right: 1px solid var(--card-border);
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      backdrop-filter: blur(20px);
+    }
+    .sidebar-logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      padding: 0 28px 28px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+      text-decoration: none;
+      display: block;
+    }
+    .sidebar-section {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 0 28px 12px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 400;
+    }
+    .nav-item:hover { background: rgba(105,167,255,0.06); color: var(--text-primary); }
+    .nav-item.active {
+      background: rgba(105,167,255,0.08);
+      color: var(--text-primary);
+      border-left: 2px solid var(--accent-cyan);
+      padding-left: 26px;
+    }
+    .nav-badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
+    .badge-live { background: rgba(78,226,154,0.12); color: var(--accent-green); }
+    .badge-alert { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
+    .badge-new { background: rgba(105,167,255,0.12); color: var(--accent-blue); }
+
+    .sidebar-signals {
+      margin-top: auto;
+      padding: 24px 28px;
+      border-top: 1px solid var(--card-border);
+    }
+    .signal-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
+    .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); }
+    .signal-val { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 4px; }
+    .sig-high { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
+    .sig-med { background: rgba(255,184,107,0.12); color: var(--accent-warning); }
+    .sig-low { background: rgba(78,226,154,0.12); color: var(--accent-green); }
+
+    .main { flex: 1; padding: 44px 52px; overflow-y: auto; }
+
+    .page-header { margin-bottom: 32px; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent-cyan); }
+    .page-title { font-size: 26px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.03em; }
+    .page-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 580px; }
+
+    .section-glow {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(87,227,255,0.35), transparent);
+      box-shadow: var(--glow-blue);
+      margin: 28px 0;
+    }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .metric-card {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+      transition: border-color 0.2s;
+    }
+    .metric-card:hover { border-color: rgba(87,227,255,0.25); }
+    .metric-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; }
+    .metric-value { font-size: 30px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.04em; line-height: 1; }
+    .metric-value span { font-size: 16px; color: var(--text-muted); font-weight: 400; }
+    .metric-delta { font-size: 12px; }
+    .delta-up { color: var(--accent-green); }
+    .delta-down { color: var(--accent-danger); }
+
+    .table-section {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+      margin-bottom: 28px;
+    }
+    .table-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .table-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+    .table-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+    .table-badge { font-size: 10px; font-weight: 500; background: rgba(105,167,255,0.12); color: var(--accent-blue); padding: 3px 10px; border-radius: 4px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(11,23,40,0.4);
+    }
+    td {
+      padding: 14px 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(120,170,255,0.06);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(105,167,255,0.04); }
+
+    .risk-high { color: var(--accent-danger); font-weight: 500; }
+    .risk-low { color: var(--accent-green); font-weight: 500; }
+    .risk-medium { color: var(--accent-warning); font-weight: 500; }
+
+    .score-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bar-track {
+      width: 80px;
+      height: 6px;
+      background: rgba(120,170,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .bar-fill { height: 100%; border-radius: 3px; }
+
+    .recommendation {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+    }
+    .rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .rec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--accent-cyan); text-transform: uppercase; }
+    .rec-badge { font-size: 10px; font-weight: 500; background: rgba(255,111,145,0.12); color: var(--accent-danger); padding: 3px 10px; border-radius: 4px; }
+    .rec-items { display: flex; flex-direction: column; gap: 16px; }
+    .rec-item { display: flex; gap: 14px; align-items: flex-start; padding-bottom: 16px; border-bottom: 1px solid rgba(120,170,255,0.06); }
+    .rec-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .rec-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .icon-danger { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
+    .icon-warning { background: rgba(255,184,107,0.12); color: var(--accent-warning); }
+    .icon-success { background: rgba(78,226,154,0.12); color: var(--accent-green); }
+    .rec-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.01em; }
+    .rec-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
+    footer {
+      padding: 18px 52px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11,23,40,0.8);
+    }
+    footer a { color: var(--text-muted); text-decoration: none; font-size: 11px; transition: color 0.2s; }
+    footer a:hover { color: var(--accent-cyan); }
+    .contact-btn {
+      padding: 9px 22px;
+      background: rgba(14,27,46,0.88);
+      border: 1px solid rgba(105,167,255,0.18);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--font-main);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+  <div class="sidebar">
+    <a href="index.html" class="sidebar-logo">Sumiyo Analysis</a>
+    <div class="sidebar-section">Modules</div>
+    <a href="index.html" class="nav-item">
+      Command Overview
+      <span class="nav-badge badge-live">Live</span>
+    </a>
+    <a href="supplier-risk.html" class="nav-item active">
+      Supplier Risk Matrix
+      <span class="nav-badge badge-alert">8</span>
+    </a>
+    <a href="ai-assistant.html" class="nav-item">
+      Alert Center
+      <span class="nav-badge badge-alert">5</span>
+    </a>
+    <a href="#" class="nav-item">
+      Project 4
+      <span class="nav-badge badge-new">Soon</span>
+    </a>
+    <a href="#" class="nav-item">
+      Project 5
+      <span class="nav-badge badge-new">Soon</span>
+    </a>
+    <div class="sidebar-signals">
+      <div class="signal-label">Signals</div>
+      <div class="signal-item">Stockout Pressure <span class="signal-val sig-med">Med</span></div>
+      <div class="signal-item">Freight Variance <span class="signal-val sig-high">High</span></div>
+      <div class="signal-item">Supplier Stability <span class="signal-val sig-low">Low</span></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <a href="index.html" class="back-link">← Back to Command Overview</a>
 
     <div class="page-header">
-      <div>
-        <div class="page-title">Supplier Risk Tracker</div>
-        <div class="page-sub">Real-time supplier scoring across cost, reliability, and delivery performance.</div>
-      </div>
-      <div class="system-status">
-        <div class="status-pulse"></div>
-        Simulated Decision Engine
-      </div>
+      <div class="page-title">Supplier Risk Tracker</div>
+      <div class="page-sub">Real-time supplier scoring with risk flags, performance trends, and actionable recommendations.</div>
     </div>
 
     <div class="section-glow"></div>
@@ -222,22 +644,22 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-label">Total Suppliers</div>
-        <div class="metric-value" data-target="12">0</div>
-        <div class="metric-delta" style="color:var(--text-muted)">All categories</div>
+        <div class="metric-value">12</div>
+        <div class="metric-delta" style="color:var(--text-muted)">Across all categories</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">High Risk</div>
-        <div class="metric-value" data-target="3" style="color:var(--accent-danger)">0</div>
-        <div class="metric-delta delta-down">Immediate action required</div>
+        <div class="metric-value" style="color:var(--accent-danger)">3</div>
+        <div class="metric-delta delta-down">Requires immediate action</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Medium Risk</div>
-        <div class="metric-value" data-target="4" style="color:var(--accent-warning)">0</div>
+        <div class="metric-value" style="color:var(--accent-warning)">4</div>
         <div class="metric-delta" style="color:var(--accent-warning)">Monitor closely</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Low Risk</div>
-        <div class="metric-value" data-target="5" style="color:var(--accent-green)">0</div>
+        <div class="metric-value" style="color:var(--accent-green)">5</div>
         <div class="metric-delta delta-up">Performing well</div>
       </div>
     </div>
@@ -246,17 +668,17 @@
       <div class="table-header">
         <div>
           <div class="table-title">Supplier Scoreboard</div>
-          <div class="table-sub">Cost · lead time · reliability · risk score</div>
+          <div class="table-sub">Comparing cost, lead time, reliability, and recommended action</div>
         </div>
-        <div class="table-badge">8 suppliers</div>
+        <div class="table-badge">8 suppliers scored</div>
       </div>
       <table>
         <thead>
           <tr>
             <th>Supplier</th>
             <th>Category</th>
-            <th>On-Time</th>
-            <th>Quality</th>
+            <th>On-Time Delivery</th>
+            <th>Quality Score</th>
             <th>Lead Time</th>
             <th>Risk Score</th>
             <th>Status</th>
@@ -264,115 +686,153 @@
         </thead>
         <tbody>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Apex Manufacturing</td>
-            <td>Electronics</td><td>94%</td><td>92/100</td><td>7 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--accent-green)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">88</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-success"></div><span class="risk-low">Low Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">Apex Manufacturing</td>
+            <td>Electronics</td>
+            <td>94%</td>
+            <td>92/100</td>
+            <td>7 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--accent-green)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">88</span>
+              </div>
+            </td>
+            <td class="risk-low">Low Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Delta Supplies</td>
-            <td>Raw Materials</td><td>71%</td><td>68/100</td><td>21 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--accent-danger)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">42</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-danger"></div><span class="risk-high">High Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">Delta Supplies</td>
+            <td>Raw Materials</td>
+            <td>71%</td>
+            <td>68/100</td>
+            <td>21 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--accent-danger)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">42</span>
+              </div>
+            </td>
+            <td class="risk-high">High Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Global Parts Co</td>
-            <td>Components</td><td>88%</td><td>85/100</td><td>10 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:76%;background:var(--accent-green)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">76</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-success"></div><span class="risk-low">Low Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">Global Parts Co</td>
+            <td>Components</td>
+            <td>88%</td>
+            <td>85/100</td>
+            <td>10 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:76%;background:var(--accent-green)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">76</span>
+              </div>
+            </td>
+            <td class="risk-low">Low Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Metro Logistics</td>
-            <td>Packaging</td><td>79%</td><td>74/100</td><td>14 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:61%;background:var(--accent-warning)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">61</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-warning"></div><span class="risk-medium">Medium Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">Metro Logistics</td>
+            <td>Packaging</td>
+            <td>79%</td>
+            <td>74/100</td>
+            <td>14 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:61%;background:var(--accent-warning)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">61</span>
+              </div>
+            </td>
+            <td class="risk-medium">Medium Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Pacific Exports</td>
-            <td>Electronics</td><td>65%</td><td>59/100</td><td>28 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--accent-danger)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">35</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-danger"></div><span class="risk-high">High Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">Pacific Exports</td>
+            <td>Electronics</td>
+            <td>65%</td>
+            <td>59/100</td>
+            <td>28 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--accent-danger)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">35</span>
+              </div>
+            </td>
+            <td class="risk-high">High Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Summit Industrial</td>
-            <td>Raw Materials</td><td>91%</td><td>89/100</td><td>8 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:83%;background:var(--accent-green)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">83</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-success"></div><span class="risk-low">Low Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">Summit Industrial</td>
+            <td>Raw Materials</td>
+            <td>91%</td>
+            <td>89/100</td>
+            <td>8 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:83%;background:var(--accent-green)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">83</span>
+              </div>
+            </td>
+            <td class="risk-low">Low Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">TechSource Ltd</td>
-            <td>Components</td><td>76%</td><td>71/100</td><td>18 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--accent-warning)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">58</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-warning"></div><span class="risk-medium">Medium Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">TechSource Ltd</td>
+            <td>Components</td>
+            <td>76%</td>
+            <td>71/100</td>
+            <td>18 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--accent-warning)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">58</span>
+              </div>
+            </td>
+            <td class="risk-medium">Medium Risk</td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">United Freight</td>
-            <td>Logistics</td><td>63%</td><td>61/100</td><td>25 days</td>
-            <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:38%;background:var(--accent-danger)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">38</span></div></td>
-            <td><div class="risk-dot"><div class="dot dot-danger"></div><span class="risk-high">High Risk</span></div></td>
+            <td style="color:var(--text-primary);font-weight:500">United Freight</td>
+            <td>Logistics</td>
+            <td>63%</td>
+            <td>61/100</td>
+            <td>25 days</td>
+            <td>
+              <div class="score-bar">
+                <div class="bar-track"><div class="bar-fill" style="width:38%;background:var(--accent-danger)"></div></div>
+                <span style="color:var(--text-primary);font-weight:500">38</span>
+              </div>
+            </td>
+            <td class="risk-high">High Risk</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="rec-section">
-      <div class="rec-section-header">
-        <div class="rec-section-title">Recommendations</div>
-        <div class="rec-section-badge">4 actions</div>
+    <div class="recommendation">
+      <div class="rec-header">
+        <div class="rec-label">Recommendations</div>
+        <div class="rec-badge">4 actions</div>
       </div>
-
-      <div class="rec-item">
-        <div class="rec-indicator ind-danger"></div>
-        <div class="rec-content">
-          <div class="rec-type type-danger">Immediate Action</div>
-          <div class="rec-title">Replace Delta Supplies & Pacific Exports</div>
-          <div class="rec-desc">Both below 45 risk score. On-time delivery under 72%. Source alternatives immediately. Dual sourcing reduces single-supplier dependency.</div>
-          <div class="rec-confidence">
-            Confidence
-            <div class="conf-bar"><div class="conf-fill conf-cyan" style="width:91%"></div></div>
-            91%
+      <div class="rec-items">
+        <div class="rec-item">
+          <div class="rec-icon icon-danger">!</div>
+          <div>
+            <div class="rec-title">Immediate Action — Delta Supplies & Pacific Exports</div>
+            <div class="rec-desc">Both suppliers are below 45 risk score with on-time delivery under 72%. Begin sourcing alternative suppliers immediately. Consider dual sourcing for critical components to reduce dependency.</div>
           </div>
         </div>
-      </div>
-
-      <div class="rec-item">
-        <div class="rec-indicator ind-danger"></div>
-        <div class="rec-content">
-          <div class="rec-type type-danger">Critical Review</div>
-          <div class="rec-title">Escalate United Freight SLA Breach</div>
-          <div class="rec-desc">63% on-time delivery affects all downstream suppliers. Schedule formal review. Establish SLA penalties for continued misses.</div>
-          <div class="rec-confidence">
-            Confidence
-            <div class="conf-bar"><div class="conf-fill conf-cyan" style="width:87%"></div></div>
-            87%
+        <div class="rec-item">
+          <div class="rec-icon icon-danger">!</div>
+          <div>
+            <div class="rec-title">Critical Review — United Freight</div>
+            <div class="rec-desc">Logistics partner performing at 63% on-time delivery. Delays here impact ALL suppliers. Schedule performance review and establish SLA penalties for missed targets.</div>
           </div>
         </div>
-      </div>
-
-      <div class="rec-item">
-        <div class="rec-indicator ind-warning"></div>
-        <div class="rec-content">
-          <div class="rec-type type-warning">Monitor</div>
-          <div class="rec-title">Flag Metro Logistics & TechSource Ltd</div>
-          <div class="rec-desc">Medium risk with declining trend. Monthly check-ins required. Request 90-day improvement plan with measurable targets.</div>
-          <div class="rec-confidence">
-            Confidence
-            <div class="conf-bar"><div class="conf-fill conf-warning" style="width:74%"></div></div>
-            74%
+        <div class="rec-item">
+          <div class="rec-icon icon-warning">~</div>
+          <div>
+            <div class="rec-title">Monitor Closely — Metro Logistics & TechSource Ltd</div>
+            <div class="rec-desc">Medium risk suppliers showing declining trends. Increase check-in frequency to monthly reviews. Request improvement plans with measurable targets over next 90 days.</div>
           </div>
         </div>
-      </div>
-
-      <div class="rec-item">
-        <div class="rec-indicator ind-success"></div>
-        <div class="rec-content">
-          <div class="rec-type type-success">Optimize</div>
-          <div class="rec-title">Lock In Apex, Global Parts & Summit Industrial</div>
-          <div class="rec-desc">All three above 76 risk score. Preferred supplier agreements and volume commitments secure long-term reliability.</div>
-          <div class="rec-confidence">
-            Confidence
-            <div class="conf-bar"><div class="conf-fill conf-green" style="width:95%"></div></div>
-            95%
+        <div class="rec-item">
+          <div class="rec-icon icon-success">✓</div>
+          <div>
+            <div class="rec-title">Strengthen Relationships — Apex, Global Parts, Summit Industrial</div>
+            <div class="rec-desc">Top performing suppliers delivering consistently above 88% on-time. Consider preferred supplier agreements and volume commitments to lock in reliability.</div>
           </div>
         </div>
       </div>
@@ -385,19 +845,6 @@
   <button class="contact-btn" onclick="window.location='mailto:sumiyosheikh@gmail.com'">Get in touch</button>
 </footer>
 
-<script>
-  function animateCount(el) {
-    const target = parseInt(el.getAttribute('data-target'));
-    let current = 0;
-    const step = Math.ceil(target / 20);
-    const timer = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current;
-      if (current >= target) clearInterval(timer);
-    }, 50);
-  }
-  document.querySelectorAll('[data-target]').forEach(el => animateCount(el));
-</script>
-
 </body>
 </html>
+
