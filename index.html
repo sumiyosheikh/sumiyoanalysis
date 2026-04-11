@@ -6,229 +6,218 @@
   <title>Sumiyo Analysis</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', Arial, sans-serif; background: #0F1117; color: #E8E4DC; min-height: 100vh; display: flex; flex-direction: column; }
+    body { font-family: Arial, sans-serif; background: #0D0F18; color: #E2DDD6; min-height: 100vh; display: flex; flex-direction: column; }
 
-    .ticker {
-      background: #1A1D26;
-      padding: 9px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      border-bottom: 1px solid #2A2D3A;
-    }
-    .ticker-inner { display: inline-block; animation: ticker 45s linear infinite; }
-    .ticker-item { display: inline-block; padding: 0 40px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6B7280; }
-    .ticker-warning { color: #F59E0B; }
-    .ticker-alert { color: #EF4444; }
-    .ticker-normal { color: #10B981; }
-    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-    .layout { display: flex; flex: 1; }
+    .layout { display: flex; flex: 1; min-height: 100vh; }
 
     .sidebar {
-      width: 240px;
-      background: #1A1D26;
-      border-right: 1px solid #2A2D3A;
-      padding: 28px 0;
+      width: 260px;
+      background: #13151F;
+      border-right: 1px solid #1E2130;
+      padding: 32px 0;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
     }
     .sidebar-logo {
       font-size: 13px;
-      letter-spacing: 0.2em;
-      color: #E8E4DC;
+      letter-spacing: 0.22em;
+      color: #E2DDD6;
       text-transform: uppercase;
-      padding: 0 24px 28px;
-      border-bottom: 1px solid #2A2D3A;
-      margin-bottom: 20px;
+      padding: 0 28px 28px;
+      border-bottom: 1px solid #1E2130;
+      margin-bottom: 24px;
     }
     .sidebar-section {
       font-size: 10px;
-      letter-spacing: 0.15em;
-      color: #4B5563;
+      letter-spacing: 0.18em;
+      color: #3D4358;
       text-transform: uppercase;
-      padding: 0 24px 10px;
+      padding: 0 28px 12px;
     }
     .nav-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 11px 24px;
+      padding: 13px 28px;
       cursor: pointer;
       transition: all 0.2s;
       text-decoration: none;
-      color: #9CA3AF;
+      color: #8A8FA8;
       font-size: 13px;
+      letter-spacing: 0.02em;
     }
-    .nav-item:hover { background: #252836; color: #E8E4DC; }
-    .nav-item.active { background: #252836; color: #E8E4DC; border-left: 2px solid #C8A882; }
-    .nav-badge {
-      font-size: 10px;
-      background: #2A2D3A;
-      color: #9CA3AF;
-      padding: 2px 7px;
-      border-radius: 10px;
-    }
-    .nav-badge.live { background: rgba(16,185,129,0.15); color: #10B981; }
-    .nav-badge.alert { background: rgba(239,68,68,0.15); color: #EF4444; }
-    .nav-badge.new { background: rgba(200,168,130,0.15); color: #C8A882; }
+    .nav-item:hover { background: #1A1D2B; color: #E2DDD6; }
+    .nav-item.active { background: #1A1D2B; color: #E2DDD6; border-left: 2px solid #C9A87C; padding-left: 26px; }
+    .nav-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+    .badge-live { background: rgba(16,185,129,0.12); color: #10B981; }
+    .badge-alert { background: rgba(239,68,68,0.12); color: #EF4444; }
+    .badge-new { background: rgba(201,168,124,0.12); color: #C9A87C; }
 
     .sidebar-signals {
       margin-top: auto;
-      padding: 20px 24px;
-      border-top: 1px solid #2A2D3A;
+      padding: 24px 28px;
+      border-top: 1px solid #1E2130;
     }
-    .signal-label { font-size: 10px; letter-spacing: 0.12em; color: #4B5563; text-transform: uppercase; margin-bottom: 12px; }
-    .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; color: #9CA3AF; }
-    .signal-val { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
-    .sig-high { background: rgba(239,68,68,0.15); color: #EF4444; }
-    .sig-med { background: rgba(245,158,11,0.15); color: #F59E0B; }
-    .sig-low { background: rgba(16,185,129,0.15); color: #10B981; }
+    .signal-label { font-size: 10px; letter-spacing: 0.15em; color: #3D4358; text-transform: uppercase; margin-bottom: 14px; }
+    .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: #8A8FA8; }
+    .signal-val { font-size: 11px; padding: 2px 9px; border-radius: 4px; }
+    .sig-high { background: rgba(239,68,68,0.12); color: #EF4444; }
+    .sig-med { background: rgba(245,158,11,0.12); color: #F59E0B; }
+    .sig-low { background: rgba(16,185,129,0.12); color: #10B981; }
 
-    .main { flex: 1; padding: 32px 36px; overflow-y: auto; }
+    .main { flex: 1; padding: 44px 52px; overflow-y: auto; }
 
-    .page-header { margin-bottom: 28px; }
-    .page-title { font-size: 22px; color: #E8E4DC; font-weight: 500; margin-bottom: 6px; }
-    .page-sub { font-size: 13px; color: #6B7280; line-height: 1.6; }
-    .page-meta { display: flex; gap: 20px; margin-top: 14px; }
-    .meta-tag { font-size: 11px; color: #6B7280; letter-spacing: 0.08em; }
-    .meta-tag span { color: #9CA3AF; }
+    .page-header { margin-bottom: 36px; }
+    .page-title { font-size: 26px; color: #E2DDD6; font-weight: 400; margin-bottom: 8px; letter-spacing: 0.01em; }
+    .page-sub { font-size: 14px; color: #5A6080; line-height: 1.7; max-width: 600px; }
+    .page-meta { display: flex; gap: 24px; margin-top: 16px; }
+    .meta-tag { font-size: 11px; color: #3D4358; letter-spacing: 0.08em; }
+    .meta-tag span { color: #8A8FA8; }
 
-    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-    .metric-card { background: #1A1D26; border: 1px solid #2A2D3A; border-radius: 8px; padding: 20px; }
-    .metric-label { font-size: 11px; letter-spacing: 0.1em; color: #6B7280; text-transform: uppercase; margin-bottom: 10px; }
-    .metric-value { font-size: 28px; color: #E8E4DC; font-weight: 400; margin-bottom: 6px; }
-    .metric-delta { font-size: 12px; color: #6B7280; }
+    .alert-bar {
+      background: rgba(245,158,11,0.06);
+      border: 1px solid rgba(245,158,11,0.15);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 36px;
+      font-size: 13px;
+      color: #F59E0B;
+      line-height: 1.7;
+    }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px; }
+    .metric-card {
+      background: #13151F;
+      border: 1px solid #1E2130;
+      border-radius: 10px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .metric-card:hover { border-color: #2A2D3F; }
+    .metric-label { font-size: 11px; letter-spacing: 0.1em; color: #3D4358; text-transform: uppercase; margin-bottom: 12px; }
+    .metric-value { font-size: 32px; color: #E2DDD6; font-weight: 300; margin-bottom: 8px; line-height: 1; }
+    .metric-value span { font-size: 16px; color: #3D4358; }
+    .metric-delta { font-size: 12px; color: #5A6080; }
     .delta-up { color: #10B981; }
     .delta-down { color: #EF4444; }
 
-    .recommendation { background: #1A1D26; border: 1px solid #2A2D3A; border-radius: 8px; padding: 24px; margin-bottom: 28px; }
-    .rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .rec-label { font-size: 10px; letter-spacing: 0.15em; color: #C8A882; text-transform: uppercase; }
-    .rec-badge { font-size: 10px; background: rgba(239,68,68,0.15); color: #EF4444; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.08em; }
-    .rec-title { font-size: 17px; color: #E8E4DC; margin-bottom: 10px; font-weight: 400; }
-    .rec-body { font-size: 13px; color: #9CA3AF; line-height: 1.7; margin-bottom: 16px; }
-    .rec-points { display: flex; flex-direction: column; gap: 7px; }
-    .rec-point { font-size: 12px; color: #6B7280; padding-left: 14px; position: relative; line-height: 1.6; }
-    .rec-point::before { content: '·'; position: absolute; left: 0; color: #C8A882; }
+    .recommendation {
+      background: #13151F;
+      border: 1px solid #1E2130;
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 36px;
+    }
+    .rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .rec-label { font-size: 10px; letter-spacing: 0.18em; color: #C9A87C; text-transform: uppercase; }
+    .rec-badge { font-size: 10px; background: rgba(239,68,68,0.12); color: #EF4444; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.08em; }
+    .rec-title { font-size: 18px; color: #E2DDD6; margin-bottom: 12px; font-weight: 400; }
+    .rec-body { font-size: 13px; color: #8A8FA8; line-height: 1.8; margin-bottom: 18px; }
+    .rec-points { display: flex; flex-direction: column; gap: 9px; }
+    .rec-point { font-size: 13px; color: #5A6080; padding-left: 16px; position: relative; line-height: 1.7; }
+    .rec-point::before { content: '·'; position: absolute; left: 0; color: #C9A87C; font-size: 16px; line-height: 1.4; }
 
-    .trend-section { background: #1A1D26; border: 1px solid #2A2D3A; border-radius: 8px; padding: 24px; margin-bottom: 28px; }
-    .trend-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .trend-title { font-size: 14px; color: #E8E4DC; font-weight: 500; }
-    .trend-sub { font-size: 12px; color: #6B7280; margin-top: 3px; }
-    .trend-tags { display: flex; gap: 8px; }
-    .trend-tag { font-size: 11px; color: #6B7280; background: #252836; padding: 4px 10px; border-radius: 4px; }
-    .trend-bars { display: flex; align-items: flex-end; gap: 8px; height: 80px; }
-    .bar-group { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
-    .bar { width: 100%; border-radius: 3px 3px 0 0; transition: height 0.3s; }
-    .bar-blue { background: #3B5BDB; }
-    .bar-green { background: #10B981; }
-    .bar-amber { background: #F59E0B; }
-    .bar-label { font-size: 10px; color: #4B5563; }
-
-    .projects-section { margin-bottom: 28px; }
-    .projects-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .projects-title { font-size: 14px; color: #E8E4DC; font-weight: 500; }
+    .projects-section { margin-bottom: 36px; }
+    .projects-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .projects-title { font-size: 16px; color: #E2DDD6; font-weight: 400; letter-spacing: 0.02em; }
     .projects-nav { display: flex; gap: 8px; }
-    .proj-arrow { background: #1A1D26; border: 1px solid #2A2D3A; color: #9CA3AF; width: 30px; height: 30px; border-radius: 4px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-    .proj-arrow:hover { background: #252836; color: #E8E4DC; }
-
-    .projects-scroll { display: flex; gap: 16px; overflow: hidden; }
-    .project-card {
-      min-width: 260px;
-      background: #1A1D26;
-      border: 1px solid #2A2D3A;
-      border-radius: 8px;
-      padding: 20px;
+    .proj-arrow {
+      background: #13151F;
+      border: 1px solid #1E2130;
+      color: #8A8FA8;
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
       cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: all 0.2s;
+    }
+    .proj-arrow:hover { background: #1A1D2B; color: #E2DDD6; border-color: #2A2D3F; }
+
+    .projects-scroll { display: flex; gap: 18px; overflow: hidden; }
+    .project-card {
+      min-width: 280px;
+      background: #13151F;
+      border: 1px solid #1E2130;
+      border-radius: 10px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.25s;
       flex-shrink: 0;
       text-decoration: none;
     }
-    .project-card:hover { border-color: #C8A882; background: #252836; transform: translateY(-2px); }
-    .proj-tag { font-size: 10px; letter-spacing: 0.1em; color: #C8A882; text-transform: uppercase; margin-bottom: 10px; }
-    .proj-name { font-size: 15px; color: #E8E4DC; margin-bottom: 8px; font-weight: 400; }
-    .proj-desc { font-size: 12px; color: #6B7280; line-height: 1.6; margin-bottom: 14px; }
-    .proj-stats { display: flex; gap: 14px; }
-    .proj-stat { font-size: 11px; color: #9CA3AF; }
-    .proj-stat strong { color: #C8A882; display: block; font-size: 14px; font-weight: 400; }
-    .proj-coming { opacity: 0.5; cursor: default; }
-    .proj-coming:hover { transform: none; border-color: #2A2D3A; background: #1A1D26; }
+    .project-card:hover { border-color: #C9A87C; background: #1A1D2B; transform: translateY(-3px); }
+    .proj-tag { font-size: 10px; letter-spacing: 0.12em; color: #C9A87C; text-transform: uppercase; margin-bottom: 12px; }
+    .proj-name { font-size: 16px; color: #E2DDD6; margin-bottom: 10px; font-weight: 400; }
+    .proj-desc { font-size: 12px; color: #5A6080; line-height: 1.7; margin-bottom: 18px; }
+    .proj-stats { display: flex; gap: 20px; }
+    .proj-stat { font-size: 11px; color: #8A8FA8; }
+    .proj-stat strong { color: #C9A87C; display: block; font-size: 18px; font-weight: 300; margin-bottom: 2px; }
+    .proj-coming { opacity: 0.4; cursor: default; }
+    .proj-coming:hover { transform: none; border-color: #1E2130; background: #13151F; }
 
-    .alert-bar { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 14px 18px; margin-bottom: 28px; font-size: 13px; color: #F59E0B; line-height: 1.6; }
+    footer {
+      padding: 20px 52px;
+      border-top: 1px solid #1E2130;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #13151F;
+    }
+    footer p { font-size: 11px; color: #3D4358; letter-spacing: 0.08em; }
+    footer a { color: #3D4358; text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: #8A8FA8; }
+    .contact-btn {
+      padding: 10px 24px;
+      border: 1px solid #2A2D3F;
+      background: transparent;
+      color: #8A8FA8;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      border-radius: 6px;
+    }
+    .contact-btn:hover { background: #1A1D2B; color: #E2DDD6; border-color: #C9A87C; }
   </style>
 </head>
 <body>
-
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item"><span class="ticker-warning">⚠ Supplier disruption risk — East Asia logistics corridor</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Lead time increase flagged — 14 day delay projected on critical materials</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ Inventory rebalance complete — 3 SKUs restocked</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Cost variance detected — Vendor pricing 12% above baseline</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Demand spike — Widget B up 34% week over week</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ Supplier risk score updated — Apex Manufacturing rated Low Risk</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Stockout risk — Widget D depletes in 8 days</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Freight cost increase — Trans-Pacific rates up 18%</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ Reorder triggered — Widget B 200 units approved</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Compliance flag — United Freight SLA breach 3rd consecutive week</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Capacity constraint — Production plant at 94% utilization</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ AI recommendation accepted — Dual sourcing activated for Electronics</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Supplier disruption risk — East Asia logistics corridor</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Lead time increase flagged — 14 day delay projected on critical materials</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ Inventory rebalance complete — 3 SKUs restocked</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Cost variance detected — Vendor pricing 12% above baseline</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Demand spike — Widget B up 34% week over week</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ Supplier risk score updated — Apex Manufacturing rated Low Risk</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Stockout risk — Widget D depletes in 8 days</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Freight cost increase — Trans-Pacific rates up 18%</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ Reorder triggered — Widget B 200 units approved</span></span>
-    <span class="ticker-item"><span class="ticker-warning">⚠ Compliance flag — United Freight SLA breach 3rd consecutive week</span></span>
-    <span class="ticker-item"><span class="ticker-alert">↑ Capacity constraint — Production plant at 94% utilization</span></span>
-    <span class="ticker-item"><span class="ticker-normal">✓ AI recommendation accepted — Dual sourcing activated for Electronics</span></span>
-  </div>
-</div>
 
 <div class="layout">
   <div class="sidebar">
     <div class="sidebar-logo">Sumiyo Analysis</div>
     <div class="sidebar-section">Modules</div>
-
     <a href="index.html" class="nav-item active">
       Command Overview
-      <span class="nav-badge live">Live</span>
+      <span class="nav-badge badge-live">Live</span>
     </a>
     <a href="supplier-risk.html" class="nav-item">
       Supplier Risk Matrix
-      <span class="nav-badge alert">8</span>
+      <span class="nav-badge badge-alert">8</span>
     </a>
     <a href="ai-assistant.html" class="nav-item">
       Alert Center
-      <span class="nav-badge alert">5</span>
+      <span class="nav-badge badge-alert">5</span>
     </a>
     <a href="#" class="nav-item">
       Project 4
-      <span class="nav-badge new">Soon</span>
+      <span class="nav-badge badge-new">Soon</span>
     </a>
     <a href="#" class="nav-item">
       Project 5
-      <span class="nav-badge new">Soon</span>
+      <span class="nav-badge badge-new">Soon</span>
     </a>
-
     <div class="sidebar-signals">
       <div class="signal-label">Signals</div>
-      <div class="signal-item">
-        Stockout Pressure
-        <span class="signal-val sig-med">Med</span>
-      </div>
-      <div class="signal-item">
-        Freight Variance
-        <span class="signal-val sig-high">High</span>
-      </div>
-      <div class="signal-item">
-        Supplier Stability
-        <span class="signal-val sig-low">Low</span>
-      </div>
+      <div class="signal-item">Stockout Pressure <span class="signal-val sig-med">Med</span></div>
+      <div class="signal-item">Freight Variance <span class="signal-val sig-high">High</span></div>
+      <div class="signal-item">Supplier Stability <span class="signal-val sig-low">Low</span></div>
     </div>
   </div>
 
@@ -250,23 +239,23 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-label">Supplier Risk Score</div>
-        <div class="metric-value">72 <span style="font-size:16px;color:#6B7280">/ 100</span></div>
+        <div class="metric-value">72 <span>/ 100</span></div>
         <div class="metric-delta delta-up">▲ 6 points vs prior month</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Stockout Probability</div>
-        <div class="metric-value">18<span style="font-size:16px;color:#6B7280">%</span></div>
+        <div class="metric-value">18<span>%</span></div>
         <div class="metric-delta delta-down">▼ 4% after safety stock adjustment</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">On-Time Delivery</div>
-        <div class="metric-value">91<span style="font-size:16px;color:#6B7280">.4%</span></div>
+        <div class="metric-value">91<span>.4%</span></div>
         <div class="metric-delta delta-up">▲ 2.1% network improvement</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Decision Confidence</div>
-        <div class="metric-value">84<span style="font-size:16px;color:#6B7280">%</span></div>
-        <div class="metric-delta" style="color:#9CA3AF">Strong recommendation quality</div>
+        <div class="metric-value">84<span>%</span></div>
+        <div class="metric-delta" style="color:#5A6080">Strong recommendation quality</div>
       </div>
     </div>
 
@@ -282,20 +271,6 @@
         <div class="rec-point">Widget B and Widget D are the most exposed SKUs over the next 14 days.</div>
         <div class="rec-point">Dual sourcing creates the cleanest risk reduction without major cost inflation.</div>
       </div>
-    </div>
-
-    <div class="trend-section">
-      <div class="trend-header">
-        <div>
-          <div class="trend-title">Network Performance Trend</div>
-          <div class="trend-sub">Monthly view of supplier reliability, inventory coverage, and risk pressure</div>
-        </div>
-        <div class="trend-tags">
-          <span class="trend-tag">Live monitored</span>
-          <span class="trend-tag">Manager-ready</span>
-        </div>
-      </div>
-      <div class="trend-bars" id="trendBars"></div>
     </div>
 
     <div class="projects-section">
@@ -343,30 +318,17 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
-<script>
-  const months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr'];
-  const bars = document.getElementById('trendBars');
-  months.forEach(m => {
-    const h1 = 30 + Math.random() * 40;
-    const h2 = 20 + Math.random() * 35;
-    const h3 = 15 + Math.random() * 30;
-    bars.innerHTML += `
-      <div class="bar-group">
-        <div style="display:flex;gap:2px;align-items:flex-end;height:70px">
-          <div class="bar bar-blue" style="height:${h1}px;width:8px"></div>
-          <div class="bar bar-green" style="height:${h2}px;width:8px"></div>
-          <div class="bar bar-amber" style="height:${h3}px;width:8px"></div>
-        </div>
-        <div class="bar-label">${m}</div>
-      </div>`;
-  });
+<footer>
+  <p><a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a></p>
+  <button class="contact-btn" onclick="window.location='mailto:sumiyosheikh@gmail.com'">Get in touch</button>
+</footer>
 
+<script>
   const ps = document.getElementById('projScroll');
-  function scrollProj(dir) { ps.scrollBy({ left: dir * 280, behavior: 'smooth' }); }
+  function scrollProj(dir) { ps.scrollBy({ left: dir * 300, behavior: 'smooth' }); }
 </script>
 
 </body>
