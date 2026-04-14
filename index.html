@@ -496,6 +496,77 @@
   background: var(--card-border);
   flex-shrink: 0;
 }
+    .rec-reasoning {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(120,170,255,0.08);
+}
+.reasoning-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.reasoning-items { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+.reasoning-item {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.5;
+}
+.reasoning-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+.rec-confidence-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.conf-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+.conf-track {
+  width: 80px;
+  height: 3px;
+  background: rgba(120,170,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.conf-fill-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent-cyan);
+}
+.conf-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+.data-verified-tag {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-green);
+  background: rgba(78,226,154,0.08);
+  border: 1px solid rgba(78,226,154,0.2);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
   </style>
 </head>
 <body>
