@@ -2,11 +2,36 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import os
+import json
+import gspread
+from google.oauth2.service_account import Credentials
 
 app = Flask(__name__)
 CORS(app)
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+
+def get_sheet(sheet_name="Sheet1"):
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+    creds_dict = json.loads(creds_json)
+    scopes = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ]
+    creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+    client = gspread.authorize(creds)
+    spreadsheet = client.open("Sumiyo Analysis Data")
+    return spreadsheet.worksheet(sheet_name)
+
+@app.route("/sheets/read", methods=["GET"])
+def read_sheet():
+    try:
+        sheet_name = request.args.get("sheet", "Sheet1")
+        sheet = get_sheet(sheet_name)
+        data = sheet.get_all_records()
+        return jsonify({"data": data})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -27,13 +52,11 @@ def chat():
     )
 
     result = response.json()
-
     if "candidates" in result:
         answer = result["candidates"][0]["content"]["parts"][0]["text"]
         return jsonify({"answer": answer})
     else:
-        error_msg = str(result)
-        return jsonify({"answer": f"Error: {error_msg}"})
+        return jsonify({"answer": f"Error: {str(result)}"})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
