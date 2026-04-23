@@ -321,8 +321,11 @@ async function loadInventory() {
           <td class="${statusClass}">${status}</td>
         </tr>`;
 
-      inventoryData += `${product} | ${stock} | ${reorder} | ${demand} | ${lead} | ${status}\n`;
+     inventoryData += `${product} | ${stock} | ${reorder} | ${demand} | ${lead} | ${status}\n`;
     });
+
+    document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
+    document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
 
   } catch (err) {
     console.log('Could not load inventory data:', err);
