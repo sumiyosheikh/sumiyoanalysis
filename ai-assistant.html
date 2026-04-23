@@ -324,8 +324,10 @@ async function loadInventory() {
      inventoryData += `${product} | ${stock} | ${reorder} | ${demand} | ${lead} | ${status}\n`;
     });
 
-    document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
-    document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+    const statusEl = document.getElementById('sheets-status');
+    const updatedEl = document.getElementById('last-updated');
+    if (statusEl) statusEl.textContent = 'Live · Google Sheets';
+    if (updatedEl) updatedEl.textContent = new Date().toLocaleTimeString();
 
   } catch (err) {
     console.log('Could not load inventory data:', err);
