@@ -444,7 +444,12 @@
   }
 }
 
-loadSuppliers();
+async function init() {
+  await loadSuppliers();
+  document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
+  document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+}
+init();
 </script>
 
 </body>
