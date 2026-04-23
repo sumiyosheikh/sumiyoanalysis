@@ -438,6 +438,8 @@
     document.querySelectorAll('.metric-value')[1].textContent = high;
     document.querySelectorAll('.metric-value')[2].textContent = medium;
     document.querySelectorAll('.metric-value')[3].textContent = low;
+    document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
+document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
 
   } catch (err) {
     console.log('Could not load supplier data:', err);
