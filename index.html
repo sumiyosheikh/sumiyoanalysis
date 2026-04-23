@@ -617,6 +617,41 @@
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('open'));
     }
   });
+  async function loadFromSheets() {
+    try {
+      const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Metrics');
+      const data = await response.json();
+      if (data.data) {
+        data.data.forEach(row => {
+          const key = row.Metric;
+          const value = row.Value;
+          if (key === 'Supplier Risk Score') document.getElementById('m1').innerHTML = value + ' <span>/ 100</span>';
+          if (key === 'Stockout Probability') document.getElementById('m2').innerHTML = value + '<span>%</span>';
+          if (key === 'On-Time Delivery') document.getElementById('m3').innerHTML = value + '<span>%</span>';
+          if (key === 'Decision Confidence') document.getElementById('m4').innerHTML = value + '<span>%</span>';
+          if (key === 'Freight Alert') document.querySelector('.alert-bar').textContent = '⚠ ' + value;
+          if (key === 'Recommendation Title') document.querySelector('.rec-title').textContent = value;
+          if (key === 'Recommendation Body') document.querySelector('.rec-body').textContent = value;
+          if (key === 'Stockout Pressure') {
+            const el = document.querySelector('.signal-item:nth-child(1) .signal-val');
+            if (el) { el.textContent = value; el.className = 'signal-val ' + (value === 'High' ? 'sig-high' : value === 'Med' ? 'sig-med' : 'sig-low'); }
+          }
+          if (key === 'Freight Variance') {
+            const el = document.querySelector('.signal-item:nth-child(2) .signal-val');
+            if (el) { el.textContent = value; el.className = 'signal-val ' + (value === 'High' ? 'sig-high' : value === 'Med' ? 'sig-med' : 'sig-low'); }
+          }
+          if (key === 'Supplier Stability') {
+            const el = document.querySelector('.signal-item:nth-child(3) .signal-val');
+            if (el) { el.textContent = value; el.className = 'signal-val ' + (value === 'High' ? 'sig-high' : value === 'Med' ? 'sig-med' : 'sig-low'); }
+          }
+        });
+      }
+    } catch (err) {
+      console.log('Sheets not available, using default values');
+    }
+  }
+
+  loadFromSheets();
 </script>
 
 </body>
