@@ -386,67 +386,58 @@
 </footer>
 
 <script>
-  function animateCount(el) {
-    const target = parseInt(el.getAttribute('data-target'));
-    let current = 0;
-    const step = Math.ceil(target / 20);
-    const timer = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current;
-      if (current >= target) clearInterval(timer);
-    }, 50);
-  }
-  document.querySelectorAll('[data-target]').forEach(el => animateCount(el));
   async function loadSuppliers() {
   try {
     const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Suppliers');
-    const data = await response.json();
-    if (data.data) {
-      const tbody = document.querySelector('tbody');
-      tbody.innerHTML = '';
-      data.data.forEach(row => {
-        const riskClass = row.Status === 'High Risk' ? 'danger' : row.Status === 'Medium Risk' ? 'warning' : 'success';
-        const dotClass = row.Status === 'High Risk' ? 'dot-danger' : row.Status === 'Medium Risk' ? 'dot-warning' : 'dot-success';
-        const riskTextClass = row.Status === 'High Risk' ? 'risk-high' : row.Status === 'Medium Risk' ? 'risk-medium' : 'risk-low';
-        const score = parseInt(row['Risk Score']);
-        tbody.innerHTML += `
-          async function loadSuppliers() {
-  try {
-    const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Suppliers');
-    const data = await response.json();
-    if (data.data && data.data.length > 0) {
-      const tbody = document.querySelector('tbody');
-      tbody.innerHTML = '';
-      data.data.forEach(row => {
-        const supplier = row['Supplier'] || '';
-        const category = row['Category'] || '';
-        const ontime = row['On-Time Delivery'] || '';
-        const quality = row['Quality Score'] || '';
-        const leadtime = row['Lead Time'] || '';
-        const score = parseInt(row['Risk Score']) || 0;
-        const status = row['Status'] || '';
-        const dotClass = status === 'High Risk' ? 'dot-danger' : status === 'Medium Risk' ? 'dot-warning' : 'dot-success';
-        const riskTextClass = status === 'High Risk' ? 'risk-high' : status === 'Medium Risk' ? 'risk-medium' : 'risk-low';
-        const barColor = status === 'High Risk' ? 'var(--accent-danger)' : status === 'Medium Risk' ? 'var(--accent-warning)' : 'var(--accent-green)';
-        tbody.innerHTML += `
-          <tr>
-            <td style="color:var(--text-primary);font-weight:600">${supplier}</td>
-            <td>${category}</td>
-            <td>${ontime}</td>
-            <td>${quality}</td>
-            <td>${leadtime}</td>
-            <td>
-              <div class="score-wrap">
-                <div class="bar-track"><div class="bar-fill" style="width:${score}%;background:${barColor}"></div></div>
-                <span style="color:var(--text-primary);font-weight:600;font-size:13px">${score}</span>
-              </div>
-            </td>
-            <td><div class="risk-dot"><div class="dot ${dotClass}"></div><span class="${riskTextClass}">${status}</span></div></td>
-          </tr>`;
-      });
-    }
+    const json = await response.json();
+    const suppliers = json.data;
+
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    let high = 0, medium = 0, low = 0;
+
+    suppliers.forEach(row => {
+      const supplier = (row['Supplier '] || row['Supplier'] || '').trim();
+      const category = (row['Category '] || row['Category'] || '').trim();
+      const ontime = (row['On-Time Delivery '] || row['On-Time Delivery'] || '').trim();
+      const quality = (row['Quality Score '] || row['Quality Score'] || '').trim();
+      const leadtime = (row['Lead Time'] || '').trim();
+      const score = parseInt(row['Risk Score '] || row['Risk Score']) || 0;
+      const status = (row['Status '] || row['Status'] || '').trim();
+
+      if (status === 'High Risk') high++;
+      else if (status === 'Medium Risk') medium++;
+      else low++;
+
+      const dotClass = status === 'High Risk' ? 'dot-danger' : status === 'Medium Risk' ? 'dot-warning' : 'dot-success';
+      const riskClass = status === 'High Risk' ? 'risk-high' : status === 'Medium Risk' ? 'risk-medium' : 'risk-low';
+      const barColor = status === 'High Risk' ? 'var(--accent-danger)' : status === 'Medium Risk' ? 'var(--accent-warning)' : 'var(--accent-green)';
+
+      tbody.innerHTML += `
+        <tr>
+          <td style="color:var(--text-primary);font-weight:600">${supplier}</td>
+          <td>${category}</td>
+          <td>${ontime}</td>
+          <td>${quality}</td>
+          <td>${leadtime}</td>
+          <td>
+            <div class="score-wrap">
+              <div class="bar-track"><div class="bar-fill" style="width:${score}%;background:${barColor}"></div></div>
+              <span style="color:var(--text-primary);font-weight:600;font-size:13px">${score}</span>
+            </div>
+          </td>
+          <td><div class="risk-dot"><div class="dot ${dotClass}"></div><span class="${riskClass}">${status}</span></div></td>
+        </tr>`;
+    });
+
+    document.querySelectorAll('.metric-value')[0].textContent = suppliers.length;
+    document.querySelectorAll('.metric-value')[1].textContent = high;
+    document.querySelectorAll('.metric-value')[2].textContent = medium;
+    document.querySelectorAll('.metric-value')[3].textContent = low;
+
   } catch (err) {
-    console.log('Sheets not available, using default values');
+    console.log('Could not load supplier data:', err);
   }
 }
 
