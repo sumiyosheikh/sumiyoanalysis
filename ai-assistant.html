@@ -277,16 +277,48 @@
 </footer>
 
 <script>
-  const SERVER_URL = "https://sumiyo-api.onrender.com";
+ let inventoryData = '';
 
-  const inventoryData = `
-Product | Stock Level | Reorder Point | Monthly Demand | Lead Time | Status
-Widget A | 150 | 100 | 120 | 7 days | Healthy
-Widget B | 20 | 50 | 80 | 14 days | Critical
-Widget C | 500 | 200 | 150 | 5 days | Healthy
-Widget D | 8 | 30 | 25 | 21 days | Critical
-Widget E | 75 | 60 | 90 | 10 days | Watch
-  `;
+async function loadInventory() {
+  try {
+    const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Inventory');
+    const json = await response.json();
+    const items = json.data;
+
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    inventoryData = 'Product | Stock Level | Reorder Point | Monthly Demand | Lead Time | Status\n';
+
+    items.forEach(row => {
+      const product = (row['Product'] || '').trim();
+      const stock = row['Stock Level'] || '';
+      const reorder = row['Reorder Point'] || '';
+      const demand = row['Monthly Demand'] || '';
+      const lead = (row['Lead Time'] || '').trim();
+      const status = (row['Status'] || '').trim();
+
+      const statusClass = status === 'Critical' ? 'risk-high' : status === 'Watch' ? 'risk-medium' : 'risk-low';
+
+      tbody.innerHTML += `
+        <tr>
+          <td style="color:var(--text-primary);font-weight:500">${product}</td>
+          <td>${stock}</td>
+          <td>${reorder}</td>
+          <td>${demand}</td>
+          <td>${lead}</td>
+          <td class="${statusClass}">${status}</td>
+        </tr>`;
+
+      inventoryData += `${product} | ${stock} | ${reorder} | ${demand} | ${lead} | ${status}\n`;
+    });
+
+  } catch (err) {
+    console.log('Could not load inventory data:', err);
+  }
+}
+
+loadInventory();
 
   async function sendMessage() {
     const input = document.getElementById('userInput');
