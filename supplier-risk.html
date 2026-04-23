@@ -397,6 +397,41 @@
     }, 50);
   }
   document.querySelectorAll('[data-target]').forEach(el => animateCount(el));
+  async function loadSuppliers() {
+  try {
+    const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Suppliers');
+    const data = await response.json();
+    if (data.data) {
+      const tbody = document.querySelector('tbody');
+      tbody.innerHTML = '';
+      data.data.forEach(row => {
+        const riskClass = row.Status === 'High Risk' ? 'danger' : row.Status === 'Medium Risk' ? 'warning' : 'success';
+        const dotClass = row.Status === 'High Risk' ? 'dot-danger' : row.Status === 'Medium Risk' ? 'dot-warning' : 'dot-success';
+        const riskTextClass = row.Status === 'High Risk' ? 'risk-high' : row.Status === 'Medium Risk' ? 'risk-medium' : 'risk-low';
+        const score = parseInt(row['Risk Score']);
+        tbody.innerHTML += `
+          <tr>
+            <td style="color:var(--text-primary);font-weight:600">${row.Supplier}</td>
+            <td>${row.Category}</td>
+            <td>${row['On-Time Delivery']}</td>
+            <td>${row['Quality Score']}</td>
+            <td>${row['Lead Time']}</td>
+            <td>
+              <div class="score-wrap">
+                <div class="bar-track"><div class="bar-fill" style="width:${score}%;background:var(--accent-${riskClass === 'danger' ? 'danger' : riskClass === 'warning' ? 'warning' : 'green'})"></div></div>
+                <span style="color:var(--text-primary);font-weight:600;font-size:13px">${score}</span>
+              </div>
+            </td>
+            <td><div class="risk-dot"><div class="dot ${dotClass}"></div><span class="${riskTextClass}">${row.Status}</span></div></td>
+          </tr>`;
+      });
+    }
+  } catch (err) {
+    console.log('Sheets not available, using default values');
+  }
+}
+
+loadSuppliers();
 </script>
 
 </body>
