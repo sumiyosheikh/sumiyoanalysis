@@ -475,9 +475,11 @@
     document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
 document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
 
-  } catch (err) {
-    console.log('Could not load supplier data:', err);
-  }
+  catch (err) {
+  console.log('Could not load supplier data:', err);
+  document.getElementById('sheets-status').textContent = 'Demo Data';
+  document.getElementById('last-updated').textContent = 'Using fallback dataset';
+}
 }
 
 async function init() {
