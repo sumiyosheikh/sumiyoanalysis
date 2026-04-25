@@ -344,6 +344,46 @@
     .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); box-shadow: 0 0 18px rgba(87,227,255,0.1); }
 
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+    @media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .main {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .hero,
+  .page-header,
+  .command-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .metrics-grid,
+  .project-grid,
+  .cards-grid,
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card,
+  .metric-card,
+  .project-card {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 32px;
+    line-height: 1.2;
+  }
+}
   </style>
 </head>
 <body>
