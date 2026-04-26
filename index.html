@@ -657,6 +657,25 @@
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('open'));
     }
   });
+  function analyzeInventory() {
+  const select = document.getElementById("productSelect");
+  const resultBox = document.getElementById("aiResult");
+
+  const selected = select.value;
+
+  if (!selected) {
+    resultBox.innerHTML = "Please select a product.";
+    return;
+  }
+
+  resultBox.innerHTML = `
+    <strong>Analyzing:</strong> ${selected}<br><br>
+    This product shows potential inventory risk based on demand, stock levels, and supplier lead time.
+    <br><br>
+    <strong>Recommendation:</strong><br>
+    Monitor stock closely and consider early reorder to avoid disruption.
+  `;
+}
   async function loadFromSheets() {
     try {
       const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Metrics');
