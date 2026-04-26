@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Supply Chain Assistant — Sumiyo Analysis</title>
+  <title>Sumiyo Analysis</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -26,6 +26,7 @@
       --glow-card: 0 8px 25px rgba(80, 140, 255, 0.10);
       --panel-gradient: linear-gradient(135deg, rgba(103,168,255,0.12), rgba(87,227,255,0.06), rgba(143,124,255,0.08));
       --button-gradient: linear-gradient(135deg, #5ea8ff, #57e3ff);
+      --border-glow: linear-gradient(135deg, rgba(105,167,255,0.45), rgba(87,227,255,0.18), rgba(143,124,255,0.22));
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,16 +68,44 @@
       text-decoration: none;
       display: block;
     }
-    .sidebar-section { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; color: var(--text-muted); text-transform: uppercase; padding: 0 28px 12px; }
-    .nav-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 28px; cursor: pointer; transition: all 0.2s; text-decoration: none; color: var(--text-secondary); font-size: 13px; font-weight: 400; }
+    .sidebar-section {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 0 28px 12px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
     .nav-item:hover { background: rgba(105,167,255,0.06); color: var(--text-primary); }
-    .nav-item.active { background: rgba(105,167,255,0.08); color: var(--text-primary); border-left: 2px solid var(--accent-cyan); padding-left: 26px; }
+    .nav-item.active {
+      background: rgba(105,167,255,0.08);
+      color: var(--text-primary);
+      border-left: 2px solid var(--accent-cyan);
+      padding-left: 26px;
+    }
     .nav-badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
     .badge-live { background: rgba(78,226,154,0.12); color: var(--accent-green); }
     .badge-alert { background: rgba(255,111,145,0.12); color: var(--accent-danger); }
     .badge-new { background: rgba(105,167,255,0.12); color: var(--accent-blue); }
 
-    .sidebar-signals { margin-top: auto; padding: 24px 28px; border-top: 1px solid var(--card-border); }
+    .sidebar-signals {
+      margin-top: auto;
+      padding: 24px 28px;
+      border-top: 1px solid var(--card-border);
+    }
     .signal-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
     .signal-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--text-secondary); }
     .signal-val { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 4px; }
@@ -86,100 +115,235 @@
 
     .main { flex: 1; padding: 44px 52px; overflow-y: auto; }
 
-    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); text-decoration: none; letter-spacing: 0.06em; margin-bottom: 20px; transition: color 0.2s; }
-    .back-link:hover { color: var(--accent-cyan); }
+    .page-header { margin-bottom: 32px; }
     .page-title { font-size: 26px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.03em; }
-    .page-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 580px; margin-bottom: 32px; }
+    .page-sub { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 580px; }
 
-    .section-glow { height: 1px; background: linear-gradient(90deg, transparent, rgba(87,227,255,0.35), transparent); box-shadow: var(--glow-blue); margin: 28px 0; }
-
-    .table-section {
-      background: var(--panel-gradient), var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      overflow: hidden;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--glow-soft), var(--glow-card);
-      margin-bottom: 28px;
-    }
-    .table-header { padding: 20px 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
-    .table-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
-    .table-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
-
-    table { width: 100%; border-collapse: collapse; }
-    th { padding: 12px 20px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--card-border); background: rgba(11,23,40,0.4); }
-    td { padding: 14px 20px; font-size: 13px; color: var(--text-secondary); border-bottom: 1px solid rgba(120,170,255,0.06); }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(105,167,255,0.04); }
-    .risk-high { color: var(--accent-danger); font-weight: 500; }
-    .risk-low { color: var(--accent-green); font-weight: 500; }
-    .risk-medium { color: var(--accent-warning); font-weight: 500; }
-
-    .chat-section {
-      background: var(--panel-gradient), var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      overflow: hidden;
-      backdrop-filter: blur(16px);
-      box-shadow: var(--glow-soft), var(--glow-card);
-      margin-bottom: 28px;
-    }
-    .chat-header {
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--card-border);
+    .filters-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .filter-wrap { position: relative; }
+    .filter-btn {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(11,23,40,0.4);
-    }
-    .chat-dot { width: 7px; height: 7px; border-radius: 50%; }
-    .dot-green { background: var(--accent-green); box-shadow: 0 0 8px rgba(78,226,154,0.4); }
-    .dot-yellow { background: var(--accent-warning); }
-    .dot-red { background: var(--accent-danger); }
-    .chat-header-text { font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.08em; text-transform: uppercase; margin-left: 4px; }
-    .chat-status { margin-left: auto; font-size: 11px; color: var(--accent-green); background: rgba(78,226,154,0.1); padding: 3px 10px; border-radius: 4px; }
-
-    .chat-messages {
-      height: 360px;
-      overflow-y: auto;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .chat-messages::-webkit-scrollbar-thumb { background: rgba(120,170,255,0.2); border-radius: 2px; }
-
-    .msg { max-width: 78%; padding: 12px 16px; border-radius: 12px; font-size: 13px; line-height: 1.7; }
-    .msg-ai { background: rgba(105,167,255,0.08); color: var(--text-secondary); align-self: flex-start; border: 1px solid rgba(120,170,255,0.12); }
-    .msg-user { background: rgba(87,227,255,0.1); color: var(--text-primary); align-self: flex-end; border: 1px solid rgba(87,227,255,0.2); }
-
-    .chat-input-area { display: flex; border-top: 1px solid var(--card-border); }
-    .chat-input { flex: 1; padding: 16px 20px; border: none; outline: none; font-size: 13px; font-family: var(--font-main); color: var(--text-primary); background: transparent; letter-spacing: -0.01em; }
-    .chat-input::placeholder { color: var(--text-muted); }
-    .chat-send {
-      padding: 16px 28px;
-      background: rgba(87,227,255,0.1);
-      color: var(--accent-cyan);
-      border: none;
-      border-left: 1px solid var(--card-border);
+      gap: 8px;
+      padding: 8px 14px;
+      background: rgba(14, 27, 46, 0.88);
+      border: 1px solid rgba(105,167,255,0.18);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-main);
       cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: -0.01em;
+    }
+    .filter-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); box-shadow: 0 0 18px rgba(87,227,255,0.08); }
+    .filter-btn.open { border-color: rgba(87,227,255,0.4); color: var(--text-primary); box-shadow: 0 0 18px rgba(87,227,255,0.1); }
+    .filter-arrow { font-size: 9px; color: var(--text-muted); transition: transform 0.2s; }
+    .filter-btn.open .filter-arrow { transform: rotate(180deg); }
+    .filter-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-cyan); opacity: 0.7; }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 180px;
+      background: rgba(10, 21, 36, 0.98);
+      border: 1px solid rgba(105,167,255,0.2);
+      border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px rgba(87,227,255,0.06);
+      z-index: 100;
+      overflow: hidden;
+      display: none;
+      backdrop-filter: blur(20px);
+    }
+    .dropdown-menu.open { display: block; }
+    .dropdown-option {
+      padding: 10px 16px;
+      font-size: 12px;
+      font-family: var(--font-main);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+    .dropdown-option:hover { background: rgba(105,167,255,0.08); color: var(--text-primary); }
+    .dropdown-option.selected { color: var(--accent-cyan); }
+    .dropdown-option.selected::before { content: '✓'; font-size: 10px; color: var(--accent-cyan); }
+    .dropdown-option:not(.selected)::before { content: ''; width: 12px; display: inline-block; }
+
+    .data-status-panel {
+      display: flex;
+      align-items: center;
+      background: rgba(11,23,40,0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .status-item { display: flex; flex-direction: column; gap: 3px; padding: 0 20px; }
+    .status-item:first-child { padding-left: 0; }
+    .status-label { font-size: 9px; font-weight: 600; letter-spacing: 0.14em; color: var(--text-muted); text-transform: uppercase; }
+    .status-value { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+    .status-verified { color: var(--accent-green); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px rgba(78,226,154,0.5); animation: pulse 2s ease-in-out infinite; }
+    .status-mode { color: var(--accent-cyan); }
+    .status-divider { width: 1px; height: 32px; background: var(--card-border); flex-shrink: 0; }
+
+    .section-glow { height: 1px; background: linear-gradient(90deg, transparent, rgba(87,227,255,0.35), transparent); box-shadow: var(--glow-blue); margin: 24px 0; }
+
+    .alert-bar {
+      background: rgba(255,184,107,0.06);
+      border: 1px solid rgba(255,184,107,0.18);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 28px;
+      font-size: 13px;
+      color: var(--accent-warning);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .metric-card {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .metric-card:hover { border-color: rgba(87,227,255,0.25); box-shadow: var(--glow-soft), 0 0 24px rgba(87,227,255,0.08); }
+    .metric-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; }
+    .metric-value { font-size: 30px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.04em; line-height: 1; }
+    .metric-value span { font-size: 16px; color: var(--text-muted); font-weight: 400; }
+    .metric-delta { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+    .delta-up { color: var(--accent-green); }
+    .delta-down { color: var(--accent-danger); }
+
+    .recommendation {
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 26px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+    }
+    .rec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .rec-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--accent-cyan); text-transform: uppercase; }
+    .rec-badge { font-size: 10px; font-weight: 500; background: rgba(255,111,145,0.12); color: var(--accent-danger); padding: 3px 10px; border-radius: 4px; letter-spacing: 0.08em; }
+    .rec-title { font-size: 17px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; letter-spacing: -0.02em; }
+    .rec-body { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+    .rec-points { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .rec-point { font-size: 13px; color: var(--text-muted); padding-left: 16px; position: relative; line-height: 1.7; }
+    .rec-point::before { content: '·'; position: absolute; left: 0; color: var(--accent-cyan); font-size: 18px; line-height: 1.3; }
+
+    .rec-reasoning { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(120,170,255,0.08); }
+    .reasoning-label { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+    .reasoning-items { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+    .reasoning-item { font-size: 12px; font-weight: 400; color: var(--text-muted); display: flex; align-items: center; gap: 8px; line-height: 1.5; }
+    .reasoning-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-cyan); opacity: 0.6; flex-shrink: 0; }
+    .rec-confidence-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .conf-label { font-size: 10px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.08em; }
+    .conf-track { width: 80px; height: 3px; background: rgba(120,170,255,0.1); border-radius: 2px; overflow: hidden; }
+    .conf-fill-bar { height: 100%; border-radius: 2px; background: var(--accent-cyan); }
+    .conf-pct { font-size: 11px; font-weight: 700; color: var(--accent-cyan); }
+    .data-verified-tag { margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-green); background: rgba(78,226,154,0.08); border: 1px solid rgba(78,226,154,0.2); padding: 3px 10px; border-radius: 4px; }
+
+    .next-step-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(87,227,255,0.08);
+      border: 1px solid rgba(87,227,255,0.2);
+      border-radius: 8px;
+      color: var(--accent-cyan);
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-family: var(--font-main);
+      letter-spacing: 0.06em;
+      text-decoration: none;
       transition: all 0.2s;
     }
-    .chat-send:hover { background: rgba(87,227,255,0.18); }
-    .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+    .next-step-btn:hover { background: rgba(87,227,255,0.14); border-color: rgba(87,227,255,0.4); transform: translateX(3px); }
 
-    footer { padding: 18px 52px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,23,40,0.8); }
+    .projects-section { margin-bottom: 36px; }
+    .projects-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .projects-title { font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.02em; }
+    .projects-nav { display: flex; gap: 8px; }
+    .proj-arrow {
+      background: rgba(14,27,46,0.88);
+      border: 1px solid rgba(105,167,255,0.18);
+      color: var(--text-secondary);
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-family: var(--font-main);
+    }
+    .proj-arrow:hover { background: rgba(105,167,255,0.08); color: var(--text-primary); border-color: rgba(87,227,255,0.3); }
+
+    .projects-scroll { display: flex; gap: 16px; overflow: hidden; }
+    .project-card {
+      min-width: 270px;
+      background: var(--panel-gradient), var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 22px;
+      cursor: pointer;
+      transition: all 0.25s;
+      flex-shrink: 0;
+      text-decoration: none;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-soft), var(--glow-card);
+    }
+    .project-card:hover { border-color: rgba(87,227,255,0.3); transform: translateY(-3px); box-shadow: var(--glow-soft), 0 0 28px rgba(87,227,255,0.1); }
+    .proj-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 10px; }
+    .proj-name { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; letter-spacing: -0.02em; }
+    .proj-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+    .proj-stats { display: flex; gap: 20px; }
+    .proj-stat { font-size: 11px; color: var(--text-secondary); }
+    .proj-stat strong { color: var(--accent-blue); display: block; font-size: 18px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.03em; }
+    .proj-coming { opacity: 0.35; cursor: default; }
+    .proj-coming:hover { transform: none; border-color: var(--card-border); box-shadow: var(--glow-soft), var(--glow-card); }
+
+    footer {
+      padding: 18px 52px;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11,23,40,0.8);
+    }
     footer a { color: var(--text-muted); text-decoration: none; font-size: 11px; transition: color 0.2s; }
     footer a:hover { color: var(--accent-cyan); }
-    .contact-btn { padding: 9px 22px; background: rgba(14,27,46,0.88); border: 1px solid rgba(105,167,255,0.18); border-radius: 10px; color: var(--text-secondary); font-size: 11px; font-weight: 500; font-family: var(--font-main); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-    .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); }
+    .contact-btn {
+      padding: 9px 22px;
+      background: rgba(14,27,46,0.88);
+      border: 1px solid rgba(105,167,255,0.18);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      font-family: var(--font-main);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); box-shadow: 0 0 18px rgba(87,227,255,0.1); }
+
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
     @media (max-width: 768px) {
   .sidebar {
     display: none;
@@ -194,8 +358,8 @@
     width: 100%;
   }
 
-  .page-header,
   .hero,
+  .page-header,
   .command-header {
     flex-direction: column;
     align-items: flex-start;
@@ -203,9 +367,9 @@
   }
 
   .metrics-grid,
+  .project-grid,
   .cards-grid,
-  .dashboard-grid,
-  .project-grid {
+  .dashboard-grid {
     grid-template-columns: 1fr;
   }
 
@@ -215,16 +379,9 @@
     width: 100%;
   }
 
-  h1,
-  .page-title {
+  h1 {
     font-size: 32px;
     line-height: 1.2;
-  }
-
-  .page-sub,
-  .hero-subtitle {
-    font-size: 16px;
-    line-height: 1.5;
   }
 }
   </style>
@@ -235,7 +392,7 @@
   <div class="sidebar">
     <a href="index.html" class="sidebar-logo">Sumiyo Analysis</a>
     <div class="sidebar-section">Modules</div>
-    <a href="index.html" class="nav-item">
+    <a href="index.html" class="nav-item active">
       Command Overview
       <span class="nav-badge badge-live">Live</span>
     </a>
@@ -243,9 +400,9 @@
       Supplier Risk Matrix
       <span class="nav-badge badge-alert">8</span>
     </a>
-   <a href="ai-assistant.html" class="nav-item active">
-      AI Assistant
-      <span class="nav-badge badge-live">Live</span>
+    <a href="ai-assistant.html" class="nav-item">
+      Decision Support
+      <span class="nav-badge badge-alert">5</span>
     </a>
     <a href="#" class="nav-item">
       Project 4
@@ -257,86 +414,192 @@
     </a>
     <div class="sidebar-signals">
       <div class="signal-label">Signals</div>
-      <div class="signal-item">Stockout Pressure <span class="signal-val sig-med">Med</span></div>
+      <div class="signal-item">Stockout Pressure <span class="signal-val sig-high">High</span></div>
       <div class="signal-item">Freight Variance <span class="signal-val sig-high">High</span></div>
       <div class="signal-item">Supplier Stability <span class="signal-val sig-low">Low</span></div>
     </div>
   </div>
 
   <div class="main">
-    <a href="index.html" class="back-link">← Back to Command Overview</a>
-
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-  <div>
-    <div class="page-title">AI Co-Pilot for Supply Chain Decisions</div>
-<div class="page-sub">Generates inventory and supplier-based recommendations using real-time risk signals. Combines supplier reliability, lead time variability, and demand exposure to suggest optimal actions. Based on simulated supply chain dataset — 8 suppliers, 12 SKUs.</div>
-  </div>
-  <div class="system-status" style="font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-cyan);background:rgba(87,227,255,0.08);border:1px solid rgba(87,227,255,0.18);padding:5px 12px;border-radius:6px;display:flex;align-items:center;gap:6px;white-space:nowrap;">
-    <div style="width:6px;height:6px;border-radius:50%;background:var(--accent-cyan);box-shadow:0 0 8px rgba(87,227,255,0.6);animation:pulse 2s ease-in-out infinite;"></div>
-    <span id="sheets-status">Connecting...</span>
-  </div>
-</div>
-<div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">
-  Last updated: <span id="last-updated" style="color:var(--accent-cyan);font-weight:600;">—</span>
-</div>
-
-    <div class="section-glow"></div>
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:20px;display:flex;align-items:center;gap:6px;">
-  <span style="color:var(--accent-cyan);">◈</span>
-  Powered by real-time supplier risk scoring — 8 suppliers monitored, 3 high-risk flagged
-</div>
-
-    <div class="table-section">
-      <div class="table-header">
-        <div>
-          <div class="table-title">Current Inventory</div>
-          <div class="table-sub">Live inventory status across monitored SKUs</div>
+    <div class="page-header">
+      <div class="page-title">AI Supply Chain Command Center</div>
+      <div class="page-sub">Operational intelligence for supplier performance, inventory risk, and faster business decisions.</div>
+      <div class="filters-row">
+        <div class="filter-wrap">
+          <button class="filter-btn" onclick="toggleFilter('time')">
+            <span class="filter-dot"></span>
+            <span id="time-label">Last 12 months</span>
+            <span class="filter-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" id="time-menu">
+            <div class="dropdown-option" onclick="selectFilter('time', '1 month', 'Last 1 month')">1 month</div>
+            <div class="dropdown-option" onclick="selectFilter('time', '3 months', 'Last 3 months')">3 months</div>
+            <div class="dropdown-option" onclick="selectFilter('time', '6 months', 'Last 6 months')">6 months</div>
+            <div class="dropdown-option selected" onclick="selectFilter('time', '12 months', 'Last 12 months')">12 months</div>
+          </div>
+        </div>
+        <div class="filter-wrap">
+          <button class="filter-btn" onclick="toggleFilter('network')">
+            <span class="filter-dot"></span>
+            <span id="network-label">North America</span>
+            <span class="filter-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" id="network-menu">
+            <div class="dropdown-option selected" onclick="selectFilter('network', 'north-america', 'North America')">North America</div>
+            <div class="dropdown-option" onclick="selectFilter('network', 'europe', 'Europe')">Europe</div>
+            <div class="dropdown-option" onclick="selectFilter('network', 'asia-pacific', 'Asia Pacific')">Asia Pacific</div>
+            <div class="dropdown-option" onclick="selectFilter('network', 'global', 'Global')">Global</div>
+          </div>
+        </div>
+        <div class="filter-wrap">
+          <button class="filter-btn" onclick="toggleFilter('sku')">
+            <span class="filter-dot"></span>
+            <span id="sku-label">12 SKUs monitored</span>
+            <span class="filter-arrow">▼</span>
+          </button>
+          <div class="dropdown-menu" id="sku-menu">
+            <div class="dropdown-option" onclick="selectFilter('sku', '5', '5 SKUs monitored')">Top 5 SKUs</div>
+            <div class="dropdown-option" onclick="selectFilter('sku', '8', '8 SKUs monitored')">Top 8 SKUs</div>
+            <div class="dropdown-option selected" onclick="selectFilter('sku', '12', '12 SKUs monitored')">All 12 SKUs</div>
+            <div class="dropdown-option" onclick="selectFilter('sku', 'critical', 'Critical SKUs only')">Critical only</div>
+          </div>
         </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Stock Level</th>
-            <th>Reorder Point</th>
-            <th>Monthly Demand</th>
-            <th>Lead Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td style="color:var(--text-primary);font-weight:500">Widget A</td><td>150</td><td>100</td><td>120</td><td>7 days</td><td class="risk-low">Healthy</td></tr>
-          <tr><td style="color:var(--text-primary);font-weight:500">Widget B</td><td>20</td><td>50</td><td>80</td><td>14 days</td><td class="risk-high">Critical</td></tr>
-          <tr><td style="color:var(--text-primary);font-weight:500">Widget C</td><td>500</td><td>200</td><td>150</td><td>5 days</td><td class="risk-low">Healthy</td></tr>
-          <tr><td style="color:var(--text-primary);font-weight:500">Widget D</td><td>8</td><td>30</td><td>25</td><td>21 days</td><td class="risk-high">Critical</td></tr>
-          <tr><td style="color:var(--text-primary);font-weight:500">Widget E</td><td>75</td><td>60</td><td>90</td><td>10 days</td><td class="risk-medium">Watch</td></tr>
-        </tbody>
-      </table>
     </div>
 
-    <div class="chat-section">
-      <div class="chat-header">
-        <div class="chat-dot dot-green"></div>
-        <div class="chat-dot dot-yellow"></div>
-        <div class="chat-dot dot-red"></div>
-        <div class="chat-header-text">Supply Chain AI</div>
-        <div class="chat-status">Connected</div>
+    <div class="data-status-panel">
+      <div class="status-item">
+        <span class="status-label">Data Source</span>
+        <span class="status-value">Simulated ERP Feed</span>
       </div>
-      <div class="chat-messages" id="messages">
-        <div class="msg msg-ai">Hello. I have access to your current inventory data. Ask me anything — which products need reordering, demand forecasts, risk analysis, or operational recommendations.</div>
+      <div class="status-divider"></div>
+      <div class="status-item">
+        <span class="status-label">Last Updated</span>
+        <span class="status-value">2 mins ago</span>
       </div>
-      <div class="chat-input-area">
-        <input type="text" class="chat-input" id="userInput" placeholder="e.g. Which products are at risk of stocking out?" />
-        <button class="chat-send" id="sendBtn" onclick="sendMessage()">Send</button>
+      <div class="status-divider"></div>
+      <div class="status-item">
+        <span class="status-label">Sync Status</span>
+        <span class="status-value status-verified">
+          <span class="status-dot"></span>
+          Verified
+        </span>
+      </div>
+      <div class="status-divider"></div>
+      <div class="status-item">
+        <span class="status-label">Confidence Level</span>
+        <span class="status-value">92%</span>
+      </div>
+      <div class="status-divider"></div>
+      <div class="status-item">
+        <span class="status-label">System Mode</span>
+        <span class="status-value status-mode">Simulated Decision Engine</span>
       </div>
     </div>
-  <div style="border:1px solid var(--card-border);border-radius:10px;padding:16px 20px;margin-bottom:28px;display:flex;gap:32px;align-items:center;background:rgba(11,23,40,0.4);">
-  <div style="font-size:10px;font-weight:700;letter-spacing:0.14em;color:var(--accent-cyan);text-transform:uppercase;white-space:nowrap;">Business Impact</div>
-  <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;"><span style="color:var(--accent-green);font-weight:700;">↓ 28%</span> Stockout risk reduced</div>
-  <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;"><span style="color:var(--accent-danger);font-weight:700;">3</span> High-risk suppliers flagged</div>
-  <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;"><span style="color:var(--accent-cyan);font-weight:700;">91%</span> Decision confidence — human verified</div>
-</div>
 
+    <div class="section-glow"></div>
+
+    <div class="alert-bar">
+      ⚠ Freight cost variance is running 18% above baseline this week. Recommended action: prioritize stable suppliers and rebalance orders away from high-delay lanes.
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Supplier Risk Score</div>
+        <div class="metric-value" id="m1">72 <span>/ 100</span></div>
+        <div class="metric-delta delta-up" id="m1d">▲ 6 points vs prior period</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Stockout Probability</div>
+        <div class="metric-value" id="m2">18<span>%</span></div>
+        <div class="metric-delta delta-down" id="m2d">▼ 4% after safety stock adjustment</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">On-Time Delivery</div>
+        <div class="metric-value" id="m3">91<span>.4%</span></div>
+        <div class="metric-delta delta-up" id="m3d">▲ 2.1% network improvement</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Decision Confidence</div>
+        <div class="metric-value" id="m4">84<span>%</span></div>
+        <div class="metric-delta" style="color:var(--text-muted)">Strong recommendation quality</div>
+      </div>
+    </div>
+
+    <div class="recommendation">
+      <div class="rec-header">
+        <div class="rec-label">Recommended Action</div>
+        <div class="rec-badge">Priority</div>
+      </div>
+      <div class="rec-title">Shift 20% volume to Apex Manufacturing</div>
+      <div class="rec-body">Apex offers the best reliability-to-cost balance this cycle. Moving a portion of demand away from United Freight exposure reduces projected stockout risk while keeping total landed cost within target range.</div>
+      <div class="rec-points">
+        <div class="rec-point">Lead time risk is concentrated in one corridor, not across the full supplier base.</div>
+        <div class="rec-point">Widget B and Widget D are the most exposed SKUs over the next 14 days.</div>
+        <div class="rec-point">Dual sourcing creates the cleanest risk reduction without major cost inflation.</div>
+      </div>
+      <div class="rec-reasoning">
+        <div class="reasoning-label">Why this recommendation</div>
+        <div class="reasoning-items">
+          <div class="reasoning-item"><span class="reasoning-dot"></span>United Freight reliability dropped to 63% — below acceptable threshold</div>
+          <div class="reasoning-item"><span class="reasoning-dot"></span>Freight variance running 18% above baseline this week</div>
+          <div class="reasoning-item"><span class="reasoning-dot"></span>Widget B demand up 34% — stockout window narrowing to 8 days</div>
+        </div>
+        <div class="rec-confidence-row">
+          <span class="conf-label">Confidence</span>
+          <div class="conf-track"><div class="conf-fill-bar" style="width:91%"></div></div>
+          <span class="conf-pct">91%</span>
+          <span class="data-verified-tag">Data-Verified Output</span>
+        </div>
+        <a href="supplier-risk.html" class="next-step-btn">View Supplier Risk Analysis →</a>
+      </div>
+    </div>
+
+    <div class="projects-section">
+      <div class="projects-header">
+        <div class="projects-title">Projects</div>
+        <div class="projects-nav">
+          <button class="proj-arrow" onclick="scrollProj(-1)">&#8592;</button>
+          <button class="proj-arrow" onclick="scrollProj(1)">&#8594;</button>
+        </div>
+      </div>
+      <div class="projects-scroll" id="projScroll">
+        <a href="ai-assistant.html" class="project-card">
+          <div class="proj-tag">Python · AI</div>
+          <div class="proj-name">AI Supply Chain Assistant</div>
+          <div class="proj-desc">AI-powered chat for inventory analysis and reorder recommendations</div>
+          <div class="proj-stats">
+            <div class="proj-stat"><strong>28%</strong>Stockout reduction</div>
+            <div class="proj-stat"><strong>&lt;3s</strong>AI response time</div>
+          </div>
+        </a>
+        <a href="supplier-risk.html" class="project-card">
+          <div class="proj-tag">Power BI · Excel</div>
+          <div class="proj-name">Supplier Risk Tracker</div>
+          <div class="proj-desc">Real-time supplier scoring with risk flags and performance trends</div>
+          <div class="proj-stats">
+            <div class="proj-stat"><strong>8</strong>Suppliers scored</div>
+            <div class="proj-stat"><strong>3</strong>High risk flagged</div>
+          </div>
+        </a>
+        <div class="project-card proj-coming">
+          <div class="proj-tag">Coming Soon</div>
+          <div class="proj-name">Live Briefing Tool</div>
+          <div class="proj-desc">Auto-generating weekly supply chain intelligence reports</div>
+          <div class="proj-stats">
+            <div class="proj-stat"><strong>—</strong>In progress</div>
+          </div>
+        </div>
+        <div class="project-card proj-coming">
+          <div class="proj-tag">Coming Soon</div>
+          <div class="proj-name">Decision Simulator</div>
+          <div class="proj-desc">Scenario planning and cost impact modeling for supply chain decisions</div>
+          <div class="proj-stats">
+            <div class="proj-stat"><strong>—</strong>In progress</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -346,88 +609,89 @@
 </footer>
 
 <script>
- const SERVER_URL = "https://sumiyo-api.onrender.com";
-let inventoryData = '';
+  const ps = document.getElementById('projScroll');
+  function scrollProj(dir) { ps.scrollBy({ left: dir * 290, behavior: 'smooth' }); }
 
-async function loadInventory() {
-  try {
-    const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Inventory');
-    const json = await response.json();
-    const items = json.data;
-
-    const tbody = document.querySelector('tbody');
-    tbody.innerHTML = '';
-
-    inventoryData = 'Product | Stock Level | Reorder Point | Monthly Demand | Lead Time | Status\n';
-
-    items.forEach(row => {
-      const product = (row['Product'] || '').trim();
-      const stock = row['Stock Level'] || '';
-      const reorder = row['Reorder Point'] || '';
-      const demand = row['Monthly Demand'] || '';
-      const lead = (row['Lead Time'] || '').trim();
-      const status = (row['Status'] || '').trim();
-
-      const statusClass = status === 'Critical' ? 'risk-high' : status === 'Watch' ? 'risk-medium' : 'risk-low';
-
-      tbody.innerHTML += `
-        <tr>
-          <td style="color:var(--text-primary);font-weight:500">${product}</td>
-          <td>${stock}</td>
-          <td>${reorder}</td>
-          <td>${demand}</td>
-          <td>${lead}</td>
-          <td class="${statusClass}">${status}</td>
-        </tr>`;
-
-     inventoryData += `${product} | ${stock} | ${reorder} | ${demand} | ${lead} | ${status}\n`;
-    });
-
-    const statusEl = document.getElementById('sheets-status');
-    const updatedEl = document.getElementById('last-updated');
-    if (statusEl) statusEl.textContent = 'Live · Google Sheets';
-    if (updatedEl) updatedEl.textContent = new Date().toLocaleTimeString();
-
-  } catch (err) {
-    console.log('Could not load inventory data:', err);
+  function toggleFilter(id) {
+    const menu = document.getElementById(id + '-menu');
+    const btn = menu.previousElementSibling;
+    const allMenus = document.querySelectorAll('.dropdown-menu');
+    const allBtns = document.querySelectorAll('.filter-btn');
+    allMenus.forEach(m => { if (m !== menu) { m.classList.remove('open'); } });
+    allBtns.forEach(b => { if (b !== btn) { b.classList.remove('open'); } });
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
   }
-}
 
-loadInventory();
+  const metricData = {
+    '1 month':   { m1: '68 <span>/ 100</span>', m1d: '▲ 2 points vs prior period', m1c: 'up', m2: '22<span>%</span>', m2d: '▲ 3% this month', m2c: 'down', m3: '88<span>.2%</span>', m3d: '▼ 1.4% this month', m3c: 'down', m4: '79<span>%</span>' },
+    '3 months':  { m1: '70 <span>/ 100</span>', m1d: '▲ 4 points vs prior period', m1c: 'up', m2: '20<span>%</span>', m2d: '▼ 2% after adjustments', m2c: 'down', m3: '89<span>.8%</span>', m3d: '▲ 1.2% improvement', m3c: 'up', m4: '81<span>%</span>' },
+    '6 months':  { m1: '71 <span>/ 100</span>', m1d: '▲ 5 points vs prior period', m1c: 'up', m2: '19<span>%</span>', m2d: '▼ 3% after adjustments', m2c: 'down', m3: '90<span>.6%</span>', m3d: '▲ 1.8% improvement', m3c: 'up', m4: '82<span>%</span>' },
+    '12 months': { m1: '72 <span>/ 100</span>', m1d: '▲ 6 points vs prior period', m1c: 'up', m2: '18<span>%</span>', m2d: '▼ 4% after safety stock adjustment', m2c: 'down', m3: '91<span>.4%</span>', m3d: '▲ 2.1% network improvement', m3c: 'up', m4: '84<span>%</span>' },
+  };
 
-  async function sendMessage() {
-    const input = document.getElementById('userInput');
-    const messages = document.getElementById('messages');
-    const sendBtn = document.getElementById('sendBtn');
-    const question = input.value.trim();
-    if (!question) return;
-
-    messages.innerHTML += `<div class="msg msg-user">${question}</div>`;
-    input.value = '';
-    sendBtn.disabled = true;
-    sendBtn.textContent = '...';
-    messages.scrollTop = messages.scrollHeight;
-
-    try {
-      const response = await fetch(`${SERVER_URL}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, inventory: inventoryData })
-      });
-      const data = await response.json();
-      messages.innerHTML += `<div class="msg msg-ai">${data.answer}</div>`;
-    } catch (err) {
-      messages.innerHTML += `<div class="msg msg-ai">Connection error. Please try again in a moment.</div>`;
+  function selectFilter(type, value, label) {
+    document.getElementById(type + '-label').textContent = label;
+    document.getElementById(type + '-menu').classList.remove('open');
+    document.querySelector(`[onclick="toggleFilter('${type}')"]`).classList.remove('open');
+    document.querySelectorAll(`#${type}-menu .dropdown-option`).forEach(o => o.classList.remove('selected'));
+    event.target.classList.add('selected');
+    if (type === 'time') {
+      const d = metricData[value] || metricData['12 months'];
+      document.getElementById('m1').innerHTML = d.m1;
+      document.getElementById('m1d').textContent = d.m1d;
+      document.getElementById('m1d').className = 'metric-delta ' + (d.m1c === 'up' ? 'delta-up' : 'delta-down');
+      document.getElementById('m2').innerHTML = d.m2;
+      document.getElementById('m2d').textContent = d.m2d;
+      document.getElementById('m2d').className = 'metric-delta ' + (d.m2c === 'up' ? 'delta-up' : 'delta-down');
+      document.getElementById('m3').innerHTML = d.m3;
+      document.getElementById('m3d').textContent = d.m3d;
+      document.getElementById('m3d').className = 'metric-delta ' + (d.m3c === 'up' ? 'delta-up' : 'delta-down');
+      document.getElementById('m4').innerHTML = d.m4 + '<span>%</span>';
     }
-
-    sendBtn.disabled = false;
-    sendBtn.textContent = 'Send';
-    messages.scrollTop = messages.scrollHeight;
   }
 
-  document.getElementById('userInput').addEventListener('keypress', e => {
-    if (e.key === 'Enter') sendMessage();
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.filter-wrap')) {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('open'));
+    }
   });
+  async function loadFromSheets() {
+    try {
+      const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Metrics');
+      const data = await response.json();
+      if (data.data) {
+        data.data.forEach(row => {
+          const key = row.Metric;
+          const value = row.Value;
+          if (key === 'Supplier Risk Score') document.getElementById('m1').innerHTML = value + ' <span>/ 100</span>';
+          if (key === 'Stockout Probability') document.getElementById('m2').innerHTML = value + '<span>%</span>';
+          if (key === 'On-Time Delivery') document.getElementById('m3').innerHTML = value + '<span>%</span>';
+          if (key === 'Decision Confidence') document.getElementById('m4').innerHTML = value + '<span>%</span>';
+          if (key === 'Freight Alert') document.querySelector('.alert-bar').textContent = '⚠ ' + value;
+          if (key === 'Recommendation Title') document.querySelector('.rec-title').textContent = value;
+          if (key === 'Recommendation Body') document.querySelector('.rec-body').textContent = value;
+          if (key === 'Stockout Pressure') {
+            const el = document.querySelector('.signal-item:nth-child(1) .signal-val');
+            if (el) { el.textContent = value; el.className = 'signal-val ' + (value === 'High' ? 'sig-high' : value === 'Med' ? 'sig-med' : 'sig-low'); }
+          }
+          if (key === 'Freight Variance') {
+            const el = document.querySelector('.signal-item:nth-child(2) .signal-val');
+            if (el) { el.textContent = value; el.className = 'signal-val ' + (value === 'High' ? 'sig-high' : value === 'Med' ? 'sig-med' : 'sig-low'); }
+          }
+          if (key === 'Supplier Stability') {
+            const el = document.querySelector('.signal-item:nth-child(3) .signal-val');
+            if (el) { el.textContent = value; el.className = 'signal-val ' + (value === 'High' ? 'sig-high' : value === 'Med' ? 'sig-med' : 'sig-low'); }
+          }
+        });
+      }
+    } catch (err) {
+      console.log('Sheets not available, using default values');
+    }
+  }
+
+  loadFromSheets();
 </script>
 
 </body>
