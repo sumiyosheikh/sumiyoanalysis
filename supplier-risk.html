@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asset Risk Tracker — Sumiyo Analysis</title>
+  <title>Supplier Risk Tracker — Sumiyo Analysis</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -177,50 +177,80 @@
     .conf-warning { background: var(--accent-warning); }
     .conf-green { background: var(--accent-green); }
     .risk-insight-banner { display: flex; align-items: center; gap: 14px; padding: 16px 18px; margin: 24px 0; border: 1px solid rgba(255, 96, 138, 0.35); background: linear-gradient(135deg, rgba(255, 96, 138, 0.12), rgba(40, 200, 255, 0.06)); border-radius: 14px; box-shadow: 0 0 22px rgba(255, 96, 138, 0.08); max-width: 720px; }
-    .risk-pulse { width: 12px; height: 12px; border-radius: 50%; background: #ff5f8f; box-shadow: 0 0 20px rgba(255, 95, 143, 1); flex-shrink: 0; animation: pulse 2s infinite; }
-    .risk-label { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #ff7aa6; font-weight: 700; }
-    .risk-insight { margin: 0; color: #dbeafe; font-size: 13px; line-height: 1.5; }
-    .risk-insight strong { color: #ffffff; }
-    .risk-tag { margin-left: auto; font-size: 10px; padding: 3px 10px; border-radius: 4px; background: rgba(255, 95, 143, 0.2); color: #ff7aa6; font-weight: 600; white-space: nowrap; align-self: flex-start; }
-    .ai-action-btn {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      text-decoration: none;
-      padding: 6px 12px;
-      border: 1px solid rgba(87, 227, 255, 0.25);
-      border-radius: 8px;
-      background: rgba(87, 227, 255, 0.07);
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-    .ai-action-btn:hover {
-      background: rgba(87, 227, 255, 0.15);
-      box-shadow: 0 0 12px rgba(87, 227, 255, 0.25);
-      color: #ffffff;
-    }
+.risk-pulse { width: 12px; height: 12px; border-radius: 50%; background: #ff5f8f; box-shadow: 0 0 20px rgba(255, 95, 143, 1); flex-shrink: 0; animation: pulse 2s infinite; }
+.risk-label { margin: 0 0 4px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #ff7aa6; font-weight: 700; }
+.risk-insight { margin: 0; color: #dbeafe; font-size: 13px; line-height: 1.5; }
+.risk-insight strong { color: #ffffff; }
+.risk-tag { margin-left: auto; font-size: 10px; padding: 3px 10px; border-radius: 4px; background: rgba(255, 95, 143, 0.2); color: #ff7aa6; font-weight: 600; white-space: nowrap; align-self: flex-start; }
+.ai-action-btn {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid rgba(87, 227, 255, 0.25);
+  border-radius: 8px;
+  background: rgba(87, 227, 255, 0.07);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
 
-    .disclaimer { font-size: 10px; color: var(--text-muted); padding: 12px 24px; border-top: 1px solid var(--card-border); line-height: 1.6; }
-
+.ai-action-btn:hover {
+  background: rgba(87, 227, 255, 0.15);
+  box-shadow: 0 0 12px rgba(87, 227, 255, 0.25);
+  color: #ffffff;
+}
     footer { padding: 18px 52px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; background: rgba(11,23,40,0.8); }
     footer a { color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; transition: color 0.2s; }
     footer a:hover { color: var(--accent-cyan); }
     .contact-btn { padding: 9px 22px; background: rgba(14,27,46,0.88); border: 1px solid rgba(105,167,255,0.18); border-radius: 10px; color: var(--text-secondary); font-size: 11px; font-weight: 600; font-family: var(--font-main); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
     .contact-btn:hover { border-color: rgba(87,227,255,0.35); color: var(--text-primary); }
-
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .layout { flex-direction: column; }
-      .main { padding: 20px; width: 100%; }
-      .page-header { flex-direction: column; gap: 16px; }
-      .metrics-grid { grid-template-columns: 1fr; }
-      .table-section { overflow-x: auto; }
-      table { min-width: 760px; }
-      .risk-insight-banner { max-width: 100%; align-items: flex-start; }
-      .risk-tag { margin-left: 0; }
-      .rec-item { padding: 18px; }
-    }
+  .sidebar {
+    display: none;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .main {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-section {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 760px;
+  }
+
+  .risk-insight-banner {
+    max-width: 100%;
+    align-items: flex-start;
+  }
+
+  .risk-tag {
+    margin-left: 0;
+  }
+
+  .rec-item {
+    padding: 18px;
+  }
+}
   </style>
+
 </head>
 <body>
 
@@ -229,15 +259,15 @@
     <a href="index.html" class="sidebar-logo">Sumiyo Analysis</a>
     <div class="sidebar-section">Modules</div>
     <a href="index.html" class="nav-item">Command Overview <span class="nav-badge badge-live">Live</span></a>
-    <a href="supplier-risk.html" class="nav-item active">Asset Risk Matrix <span class="nav-badge badge-alert">8</span></a>
+    <a href="supplier-risk.html" class="nav-item active">Supplier Risk Matrix <span class="nav-badge badge-alert">8</span></a>
     <a href="ai-assistant.html" class="nav-item">Alert Center <span class="nav-badge badge-alert">5</span></a>
     <a href="#" class="nav-item">Project 4 <span class="nav-badge badge-new">Soon</span></a>
     <a href="#" class="nav-item">Project 5 <span class="nav-badge badge-new">Soon</span></a>
     <div class="sidebar-signals">
-      <div class="signal-label">Market Signals</div>
-      <div class="signal-item">Volatility Pressure <span class="signal-val sig-med">Med</span></div>
-      <div class="signal-item">Price Variance <span class="signal-val sig-high">High</span></div>
-      <div class="signal-item">Asset Stability <span class="signal-val sig-low">Low</span></div>
+      <div class="signal-label">Signals</div>
+      <div class="signal-item">Stockout Pressure <span class="signal-val sig-med">Med</span></div>
+      <div class="signal-item">Freight Variance <span class="signal-val sig-high">High</span></div>
+      <div class="signal-item">Supplier Stability <span class="signal-val sig-low">Low</span></div>
     </div>
   </div>
 
@@ -246,8 +276,8 @@
 
     <div class="page-header">
       <div>
-        <div class="page-title">Asset Risk Tracker</div>
-        <div class="page-sub">Risk is concentrated across 3 assets with high price volatility and low stability scores.</div>
+        <div class="page-title">Supplier Risk Tracker</div>
+        <div class="page-sub">Risk is concentrated across 3 suppliers with high lead-time variability and low reliability scores.</div>
       </div>
       <div class="system-status">
         <div class="status-pulse"></div>
@@ -257,14 +287,14 @@
 
     <div class="section-glow"></div>
     <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">
-      Last updated: <span id="last-updated" style="color:var(--accent-cyan);font-weight:600;">—</span>
-    </div>
+  Last updated: <span id="last-updated" style="color:var(--accent-cyan);font-weight:600;">—</span>
+</div>
 
     <div class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-label">Total Assets</div>
+        <div class="metric-label">Total Suppliers</div>
         <div class="metric-value" data-target="12">0</div>
-        <div class="metric-delta" style="color:var(--text-muted)">All sectors</div>
+        <div class="metric-delta" style="color:var(--text-muted)">All categories</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">High Risk</div>
@@ -286,69 +316,69 @@
     <div class="table-section">
       <div class="table-header">
         <div>
-          <div class="table-title">Asset Scoreboard</div>
-          <div class="table-sub">Sector · price stability · fundamental score · volatility · risk score</div>
+          <div class="table-title">Supplier Scoreboard</div>
+          <div class="table-sub">Cost · lead time · reliability · risk score</div>
         </div>
-        <div class="table-badge">8 assets</div>
+        <div class="table-badge">8 suppliers</div>
       </div>
       <table>
         <thead>
           <tr>
-            <th>Asset</th>
-            <th>Sector</th>
-            <th>Price Stability</th>
-            <th>Fundamental Score</th>
-            <th>Volatility</th>
+            <th>Supplier</th>
+            <th>Category</th>
+            <th>On-Time</th>
+            <th>Quality</th>
+            <th>Lead Time</th>
             <th>Risk Score</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Apple (AAPL)</td>
-            <td>Technology</td><td>94%</td><td>92/100</td><td>Low</td>
+            <td style="color:var(--text-primary);font-weight:600">Apex Manufacturing</td>
+            <td>Electronics</td><td>94%</td><td>92/100</td><td>7 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--accent-green)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">88</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-success"></div><span class="risk-low">Low Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Bitcoin (BTC)</td>
-            <td>Crypto</td><td>71%</td><td>68/100</td><td>High</td>
+            <td style="color:var(--text-primary);font-weight:600">Delta Supplies</td>
+            <td>Raw Materials</td><td>71%</td><td>68/100</td><td>21 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:42%;background:var(--accent-danger)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">42</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-danger"></div><span class="risk-high">High Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Microsoft (MSFT)</td>
-            <td>Technology</td><td>88%</td><td>85/100</td><td>Low</td>
+            <td style="color:var(--text-primary);font-weight:600">Global Parts Co</td>
+            <td>Components</td><td>88%</td><td>85/100</td><td>10 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:76%;background:var(--accent-green)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">76</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-success"></div><span class="risk-low">Low Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Ethereum (ETH)</td>
-            <td>Crypto</td><td>79%</td><td>74/100</td><td>Medium</td>
+            <td style="color:var(--text-primary);font-weight:600">Metro Logistics</td>
+            <td>Packaging</td><td>79%</td><td>74/100</td><td>14 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:61%;background:var(--accent-warning)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">61</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-warning"></div><span class="risk-medium">Medium Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">Tesla (TSLA)</td>
-            <td>Automotive</td><td>65%</td><td>59/100</td><td>High</td>
+            <td style="color:var(--text-primary);font-weight:600">Pacific Exports</td>
+            <td>Electronics</td><td>65%</td><td>59/100</td><td>28 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--accent-danger)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">35</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-danger"></div><span class="risk-high">High Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">NVIDIA (NVDA)</td>
-            <td>Technology</td><td>91%</td><td>89/100</td><td>Low</td>
+            <td style="color:var(--text-primary);font-weight:600">Summit Industrial</td>
+            <td>Raw Materials</td><td>91%</td><td>89/100</td><td>8 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:83%;background:var(--accent-green)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">83</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-success"></div><span class="risk-low">Low Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">NQ Futures</td>
-            <td>Index</td><td>76%</td><td>71/100</td><td>Medium</td>
+            <td style="color:var(--text-primary);font-weight:600">TechSource Ltd</td>
+            <td>Components</td><td>76%</td><td>71/100</td><td>18 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:58%;background:var(--accent-warning)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">58</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-warning"></div><span class="risk-medium">Medium Risk</span></div></td>
           </tr>
           <tr>
-            <td style="color:var(--text-primary);font-weight:600">S&P 500 (ES)</td>
-            <td>Index</td><td>63%</td><td>61/100</td><td>High</td>
+            <td style="color:var(--text-primary);font-weight:600">United Freight</td>
+            <td>Logistics</td><td>63%</td><td>61/100</td><td>25 days</td>
             <td><div class="score-wrap"><div class="bar-track"><div class="bar-fill" style="width:38%;background:var(--accent-danger)"></div></div><span style="color:var(--text-primary);font-weight:600;font-size:13px">38</span></div></td>
             <td><div class="risk-dot"><div class="dot dot-danger"></div><span class="risk-high">High Risk</span></div></td>
           </tr>
@@ -365,7 +395,7 @@
         <span class="risk-pulse"></span>
         <div>
           <p class="risk-label">Risk Signal Detected</p>
-          <p class="risk-insight">Risk is concentrated across <strong>3 assets</strong>, driven by <strong>high volatility</strong> and <strong>unstable price patterns</strong>.</p>
+          <p class="risk-insight">Risk is concentrated across <strong>3 suppliers</strong>, driven by <strong>low reliability</strong> and <strong>unstable lead times</strong>.</p>
         </div>
         <span class="risk-tag">High Impact</span>
       </div>
@@ -374,8 +404,8 @@
         <div class="rec-indicator ind-danger"></div>
         <div class="rec-content">
           <div class="rec-type type-danger">Immediate Action</div>
-          <div class="rec-title">Reduce Exposure — Bitcoin & Tesla</div>
-          <div class="rec-desc">Both below 45 risk score. Price stability under 72%. Consider reducing position size or hedging. Diversifying reduces single-asset dependency.</div>
+          <div class="rec-title">Replace Delta Supplies & Pacific Exports</div>
+          <div class="rec-desc">Both below 45 risk score. On-time delivery under 72%. Source alternatives immediately. Dual sourcing reduces single-supplier dependency.</div>
           <div class="rec-confidence">
             Confidence
             <div class="conf-bar"><div class="conf-fill conf-cyan" style="width:91%"></div></div>
@@ -388,8 +418,8 @@
         <div class="rec-indicator ind-danger"></div>
         <div class="rec-content">
           <div class="rec-type type-danger">Critical Review</div>
-          <div class="rec-title">Escalate S&P 500 Volatility Breach</div>
-          <div class="rec-desc">63% price stability affects downstream portfolio performance. Schedule formal portfolio review. Establish stop-loss thresholds for continued volatility.</div>
+          <div class="rec-title">Escalate United Freight SLA Breach</div>
+          <div class="rec-desc">63% on-time delivery affects all downstream suppliers. Schedule formal review. Establish SLA penalties for continued misses.</div>
           <div class="rec-confidence">
             Confidence
             <div class="conf-bar"><div class="conf-fill conf-cyan" style="width:87%"></div></div>
@@ -402,8 +432,8 @@
         <div class="rec-indicator ind-warning"></div>
         <div class="rec-content">
           <div class="rec-type type-warning">Monitor</div>
-          <div class="rec-title">Watch Ethereum & NQ Futures</div>
-          <div class="rec-desc">Medium risk with declining trend. Monthly performance check-ins required. Request 90-day stability review with measurable targets.</div>
+          <div class="rec-title">Flag Metro Logistics & TechSource Ltd</div>
+          <div class="rec-desc">Medium risk with declining trend. Monthly check-ins required. Request 90-day improvement plan with measurable targets.</div>
           <div class="rec-confidence">
             Confidence
             <div class="conf-bar"><div class="conf-fill conf-warning" style="width:74%"></div></div>
@@ -419,22 +449,24 @@
             <div class="rec-type type-success">Optimize</div>
             <a href="ai-assistant.html" class="ai-action-btn">Analyze with AI →</a>
           </div>
-          <div class="rec-title">Strengthen Positions — Apple, Microsoft & NVIDIA</div>
-          <div class="rec-desc">All three above 76 risk score. Consider increasing allocation and long-term position commitments to secure portfolio stability.</div>
+          <div class="rec-title">Lock In Apex, Global Parts & Summit Industrial</div>
+          <div class="rec-desc">All three above 76 risk score. Preferred supplier agreements and volume commitments secure long-term reliability.</div>
           <div class="rec-confidence">
             Confidence
             <div class="conf-bar"><div class="conf-fill conf-green" style="width:95%"></div></div>
             95%
-          </div>
+           </div>
         </div>
       </div>
 
       <div class="disclaimer">
-        ⚠️ Disclaimer: This dashboard is for educational and portfolio demonstration purposes only. All company names, ticker symbols, and asset references are used for analytical illustration. This is not financial advice, investment recommendations, or any form of regulated financial service. All data shown is simulated.
+        ⚠️ Disclaimer: This dashboard is for educational and portfolio demonstration purposes only. All company names, symbols, and  references are used for analytical illustration. This is not financial advice, investment recommendations, or any form of regulated service. All data shown is simulated.
       </div>
     </div>
   </div>
 </div>
+
+
 
 <footer>
   <a href="https://www.linkedin.com/in/sumiyosheikh">LinkedIn</a>
@@ -442,70 +474,72 @@
 </footer>
 
 <script>
-  async function loadAssets() {
-    try {
-      const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Suppliers');
-      const json = await response.json();
-      const assets = json.data;
+  async function loadSuppliers() {
+  try {
+    const response = await fetch('https://sumiyo-api.onrender.com/sheets/read?sheet=Suppliers');
+    const json = await response.json();
+    const suppliers = json.data;
 
-      const tbody = document.querySelector('tbody');
-      tbody.innerHTML = '';
+    const tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
 
-      let high = 0, medium = 0, low = 0;
+    let high = 0, medium = 0, low = 0;
 
-      assets.forEach(row => {
-        const asset = (row['Supplier '] || row['Supplier'] || '').trim();
-        const sector = (row['Category '] || row['Category'] || '').trim();
-        const stability = (row['On-Time Delivery '] || row['On-Time Delivery'] || '').trim();
-        const fundamental = (row['Quality Score '] || row['Quality Score'] || '').trim();
-        const volatility = (row['Lead Time'] || '').trim();
-        const score = parseInt(row['Risk Score '] || row['Risk Score']) || 0;
-        const status = (row['Status '] || row['Status'] || '').trim();
+    suppliers.forEach(row => {
+      const supplier = (row['Supplier '] || row['Supplier'] || '').trim();
+      const category = (row['Category '] || row['Category'] || '').trim();
+      const ontime = (row['On-Time Delivery '] || row['On-Time Delivery'] || '').trim();
+      const quality = (row['Quality Score '] || row['Quality Score'] || '').trim();
+      const leadtime = (row['Lead Time'] || '').trim();
+      const score = parseInt(row['Risk Score '] || row['Risk Score']) || 0;
+      const status = (row['Status '] || row['Status'] || '').trim();
 
-        if (status === 'High Risk') high++;
-        else if (status === 'Medium Risk') medium++;
-        else low++;
+      if (status === 'High Risk') high++;
+      else if (status === 'Medium Risk') medium++;
+      else low++;
 
-        const dotClass = status === 'High Risk' ? 'dot-danger' : status === 'Medium Risk' ? 'dot-warning' : 'dot-success';
-        const riskClass = status === 'High Risk' ? 'risk-high' : status === 'Medium Risk' ? 'risk-medium' : 'risk-low';
-        const barColor = status === 'High Risk' ? 'var(--accent-danger)' : status === 'Medium Risk' ? 'var(--accent-warning)' : 'var(--accent-green)';
+      const dotClass = status === 'High Risk' ? 'dot-danger' : status === 'Medium Risk' ? 'dot-warning' : 'dot-success';
+      const riskClass = status === 'High Risk' ? 'risk-high' : status === 'Medium Risk' ? 'risk-medium' : 'risk-low';
+      const barColor = status === 'High Risk' ? 'var(--accent-danger)' : status === 'Medium Risk' ? 'var(--accent-warning)' : 'var(--accent-green)';
 
-        tbody.innerHTML += `
-          <tr>
-            <td style="color:var(--text-primary);font-weight:600">${asset}</td>
-            <td>${sector}</td>
-            <td>${stability}</td>
-            <td>${fundamental}</td>
-            <td>${volatility}</td>
-            <td>
-              <div class="score-wrap">
-                <div class="bar-track"><div class="bar-fill" style="width:${score}%;background:${barColor}"></div></div>
-                <span style="color:var(--text-primary);font-weight:600;font-size:13px">${score}</span>
-              </div>
-            </td>
-            <td><div class="risk-dot"><div class="dot ${dotClass}"></div><span class="${riskClass}">${status}</span></div></td>
-          </tr>`;
-      });
+      tbody.innerHTML += `
+        <tr>
+          <td style="color:var(--text-primary);font-weight:600">${supplier}</td>
+          <td>${category}</td>
+          <td>${ontime}</td>
+          <td>${quality}</td>
+          <td>${leadtime}</td>
+          <td>
+            <div class="score-wrap">
+              <div class="bar-track"><div class="bar-fill" style="width:${score}%;background:${barColor}"></div></div>
+              <span style="color:var(--text-primary);font-weight:600;font-size:13px">${score}</span>
+            </div>
+          </td>
+          <td><div class="risk-dot"><div class="dot ${dotClass}"></div><span class="${riskClass}">${status}</span></div></td>
+        </tr>`;
+    });
 
-      document.querySelectorAll('.metric-value')[0].textContent = assets.length;
-      document.querySelectorAll('.metric-value')[1].textContent = high;
-      document.querySelectorAll('.metric-value')[2].textContent = medium;
-      document.querySelectorAll('.metric-value')[3].textContent = low;
-      document.getElementById('sheets-status').textContent = 'Live · Market Data';
-      document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+    document.querySelectorAll('.metric-value')[0].textContent = suppliers.length;
+    document.querySelectorAll('.metric-value')[1].textContent = high;
+    document.querySelectorAll('.metric-value')[2].textContent = medium;
+    document.querySelectorAll('.metric-value')[3].textContent = low;
+    document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
+document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
 
-    } catch (err) {
-      console.log('Could not load asset data:', err);
-      document.getElementById('sheets-status').textContent = 'Demo Data';
-      document.getElementById('last-updated').textContent = 'Using fallback dataset';
-    }
-  }
+  catch (err) {
+  console.log('Could not load supplier data:', err);
+  document.getElementById('sheets-status').textContent = 'Demo Data';
+  document.getElementById('last-updated').textContent = 'Using fallback dataset';
+}
+}
 
-  async function init() {
-    await loadAssets();
-  }
-  init();
+async function init() {
+  await loadSuppliers();
+  document.getElementById('sheets-status').textContent = 'Live · Google Sheets';
+  document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+}
+init();
 </script>
-
+  
 </body>
 </html>
